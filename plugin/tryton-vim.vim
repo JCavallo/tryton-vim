@@ -48,6 +48,7 @@ def convert_to_json():
     vim.command("set filetype=javascript")
     vim.command("set foldmethod=indent")
     vim.command("set foldlevel=3")
+    vim.command("set paste")
     vim.command("normal \"*P")
     vim.command("normal gg")
     stop = False
@@ -69,6 +70,16 @@ def convert_to_json():
         except:
             stop = True
         i += 1
+    # Convert single quotes to double quotes
+    vim.command("%s/\"/xyxz/g")
+    vim.command("%s/'/\"/g")
+    vim.command("%s/xyxz/'/g")
+    # Clean values
+    vim.command("%s/None/null/g")
+    vim.command("%s/False/false/g")
+    vim.command("%s/True/true/g")
+    # Remove escaped chars
+    vim.command("%s/\\//g")
     vim.command("normal gg0i[")
     vim.command("normal %sG$r]" % str(i - 1))
     vim.command("%!python -mjson.tool")
