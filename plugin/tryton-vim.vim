@@ -42,7 +42,7 @@ def convert_to_json():
                     }
             return super(JSONEncoder, self).default(obj)
 
-    vim.command("normal ,r,os")
+    vim.command("Scratch")
     vim.command("normal ggdG")
     vim.command("set tw=0")
     vim.command("set filetype=javascript")
@@ -71,17 +71,30 @@ def convert_to_json():
             stop = True
         i += 1
     # Convert single quotes to double quotes
-    vim.command("%s/\"/xyxz/g")
-    vim.command("%s/'/\"/g")
-    vim.command("%s/xyxz/'/g")
+    # vim.command("%s/\"/xyxz/g")
+    # vim.command("%s/'/\"/g")
+    # vim.command("%s/xyxz/'/g")
     # Clean values
-    vim.command("%s/None/null/g")
-    vim.command("%s/False/false/g")
-    vim.command("%s/True/true/g")
+    try:
+        vim.command("%s/None/null/g")
+    except:
+        pass
+    try:
+        vim.command("%s/False/false/g")
+    except:
+        pass
+    try:
+        vim.command("%s/True/true/g")
+    except:
+        pass
     # Remove escaped chars
-    vim.command("%s/\\//g")
+    try:
+        vim.command("%s/\\//g")
+    except:
+        pass
     vim.command("normal gg0i[")
     vim.command("normal %sG$r]" % str(i - 1))
     vim.command("%!python -mjson.tool")
+    vim.command("set nopaste")
 EOF
 map <Leader>fj :py convert_to_json()<CR>
