@@ -1,0 +1,260 @@
+###############################################################################
+#						 Tryton Snippets									 #
+###############################################################################
+
+snippet clmesu "Basic classmethod calling super" b
+@classmethod
+def ${1:method_name}(cls${2:, ${3:params}}):
+	super(${4:class_name}, cls).$1($3)
+	$0
+endsnippet
+
+snippet clme "Basic classmethod" b
+@classmethod
+def ${1:method_name}(cls${2:, ${3:params}}):
+	$0
+
+endsnippet
+
+snippet defset
+@classmethod
+def __setup__(cls):
+	${1}super(${2:Class Name}, cls).__setup__()
+	${3}
+endsnippet
+
+snippet fibo
+${1:field_name} = fields.Boolean('${2:field_name}'${3:, ${4}})${5}
+endsnippet
+
+snippet fich
+${1:field_name} = fields.Char('${2:field_name}'${3:, ${4}})${5}
+endsnippet
+
+snippet fida
+${1:field_name} = fields.Date('${2:field_name}'${3:, ${4}})${4}
+endsnippet
+
+snippet fiin
+${1:field_name} = fields.Integer('${2:field_name}'${3:, ${4}})${5}
+endsnippet
+
+snippet finu
+${1:field_name} = fields.Numeric('${2:field_name}'${3:, ${4}})$0
+endsnippet
+
+snippet finucu
+${1:field_name} = fields.Numeric(
+	'${2:field_name}'${3:, 
+	${4:digits=(16, Eval('currency_digits', DEF_CUR_DIG))}},
+	${5:depends=['currency_digits']}${6:)
+currency = fields.Function(
+	fields.Many2One('currency.currency', 'Currency'),
+	'get_currency_id'}${7:)
+currency_digits = fields.Function(
+	fields.Integer('Currency Digits', states=\{'invisible': True\}),
+	'get_currency_digits'})${8}
+endsnippet
+
+snippet fite
+${1:field_name} = fields.Text('${2:field_name}'${3:, ${4}})${5}
+endsnippet
+
+snippet fimo
+${1:field_name} = fields.Many2One(
+	'${2:model_name}', '${3:field_name}',${4}
+)${5}
+endsnippet
+
+snippet fiom
+${1:field_name} = fields.One2Many(
+	'${2:model_name}', '${3:back_ref}', '${4:field_name}', ${5}
+)${5}
+endsnippet
+
+snippet fimm
+${1:field_name} = fields.Many2Many(
+	'${2:m2m_relation_name}', '${3:origin}', '${4:target}',
+	'${5:field_name}',${6}
+)${7}
+endsnippet
+
+snippet fise
+${1:field_name} = fields.Selection(
+	${2:[('${3}', '${4}')${5:, ${6}}]}${7:'${8:selection_method}'},
+	'${9:name}'${10:, ${11}})${12}
+endsnippet
+
+snippet fifubo
+${1:field_name} = fields.Function(
+	fields.Boolean('${2:name}'${3:, ${4}}),
+	'${5:get_$1}'${5:, ${6}})${7}
+endsnippet
+
+snippet fifuch
+${1:field_name} = fields.Function(
+	fields.Char('${2:name}'${3:, ${4}}),
+	'${5:get_$1}'${5:, ${6}})${7}
+endsnippet
+
+snippet fifute
+${1:field_name} = fields.Function(
+	fields.Text(
+		'${2:name}',${3}
+	),
+	'${4:get_$1}',${5}
+)${6}
+endsnippet
+
+snippet fifuse
+${1:field_name} = fields.Function(
+	fields.Selection(
+		${2:selection},
+		'${3:name}',${4}
+	),
+	'${5:get_$1}',${6}
+)${7}
+endsnippet
+
+snippet fifumo
+${1:field_name} = fields.Function(
+	fields.Many2One(
+		'${2:model_name}',
+		'${3:name}',${5}
+	),
+	'${4:get_$1}',${6}
+)${7}
+endsnippet
+
+snippet fiod
+${1:field_name} = fields.One2ManyDomain(
+	'${2:model_name}', '${3:reverse_field_name}', '${4:field_name}',
+	domain=[
+		('${5:attribute_name}', '${6:operand}', ${7:value}),${8}
+	],${9}
+)${10}
+endsnippet
+
+snippet stin
+states={'invisible': ${1:pyson_expr}},${2}
+endsnippet
+
+snippet stre
+states={'readonly': ${1:pyson_expr}},${2}
+endsnippet
+
+snippet trcl
+class ${1:class_name}(${2}):
+	'${3:class_fancy_name}'
+
+	__name__ = '${4:model_name}'${5}
+endsnippet
+
+snippet ctx
+context={'${1:value_name}': ${2:value}},${3}
+endsnippet
+
+snippet pg
+${1:var_name} = Pool().get('${2:model_name}')${3}
+endsnippet
+
+snippet trco
+Transaction().context${1}
+endsnippet
+
+snippet trcog
+${1:var_name} = Transaction().context.get('${2:value}')${3}
+endsnippet
+
+snippet trcb
+import traceback
+traceback.print_stack()
+endsnippet
+
+snippet chkfi
+(hasattr(${1:object}, '${2:attribute}') and $1.$2):${3}
+endsnippet
+
+snippet dm
+domain=[
+	('${1:attribute_name}', '${2:operand}', ${3:value}),${4}
+],${5}
+endsnippet
+
+snippet se1
+${1:var_name}, = ${2:model_name}.search([
+		('${3:field}', '${4:=}', ${5:value})${6},
+	]${7:, limit=1})${8}
+endsnippet
+
+snippet ocw
+on_change_with=['${1}'${2:, ${3}}],$0
+endsnippet
+
+snippet oc
+on_change=['${1}',${2}],${3}
+endsnippet
+
+snippet ermes
+cls._error_messages.update({
+	'${1}': '${2}',${3}
+})${4}
+endsnippet
+
+snippet sep
+print '#' * 80
+print '${1:%s}'${2}
+endsnippet
+
+snippet defdef
+@classmethod
+def default_${1:field_name}(cls):
+	${2}return ${3}
+
+endsnippet
+
+snippet defoc
+def on_change_${1:field_name}(self):
+	${2:res = ${3}}
+	${4}return  ${5:res}
+endsnippet
+
+snippet defocw
+def on_change_with_${1:field_name}(self, ${2:name=None}):
+	${3}return ${4}
+endsnippet
+
+snippet __init__
+from trytond.pool import Pool
+from .${1:Filename} import *
+
+
+def register():
+	Pool.register(
+		# From file $1
+		${2:class_name},${3}
+		module='${4:$1}', type_='${5:model}')${6}
+
+endsnippet
+
+snippet req
+required=${1:True},${2}
+endsnippet
+
+snippet ondel
+ondelete='${1:CASCADE}',${2}
+endsnippet
+
+snippet cfgup
+${1:cfg_dict}['${2:model_name}'] = Model.get('${3:module_name}.${4:model_name}')${5}
+endsnippet
+
+snippet sudo "Sudo this"
+with Transaction().set_user(0):
+	$1
+endsnippet
+
+snippet cpfi "Copy field"
+cls.${1:field_name} = copy.copy(cls.$1)
+$2
+endsnippet
