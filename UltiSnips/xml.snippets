@@ -97,7 +97,7 @@ ${1}
 endsnippet
 
 snippet refo
-<record model="ir.ui.view" id="$2_form">
+<record model="ir.ui.view" id="$2_view_form">
   <field name="model">${1:module_name}.${2:model_name}</field>
   <field name="type">form</field>
   <field name="name">$2_form</field>
@@ -105,23 +105,23 @@ snippet refo
 endsnippet
 
 snippet retr
-<record model="ir.ui.view" id="$2_tree">
+<record model="ir.ui.view" id="$2_view_list">
   <field name="model">${1:module_name}.${2:model_name}</field>
   <field name="type">tree</field>
-  <field name="name">$2_tree</field>
+  <field name="name">$2_list</field>
 </record>${3}
 endsnippet
 
 snippet refotr
-<record model="ir.ui.view" id="$2_form">
+<record model="ir.ui.view" id="$2_view_form">
   <field name="model">${1:module_name}.${2:model_name}</field>
   <field name="type">form</field>
   <field name="name">$2_form</field>
 </record>
-<record model="ir.ui.view" id="$2_tree">
+<record model="ir.ui.view" id="$2_view_list">
   <field name="model">$1.$2</field>
   <field name="type">tree</field>
-  <field name="name">$2_tree</field>
+  <field name="name">$2_list</field>
 </record>${3}
 endsnippet
 
