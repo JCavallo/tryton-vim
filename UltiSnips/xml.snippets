@@ -139,9 +139,9 @@ snippet rewi
     <field name="wiz_name">${2:wizard_module}.${3:wizard_model_name}</field>
 </record>
 ${4:<record model="ir.action.keyword" id="act_$3_keyword">
-  <field name="keyword">form_relate</field>
-  <field name="model">${5:source_module}.${6:source_model},${7:-1}</field>
-  <field name="action" ref="act_$3"/>
+    <field name="keyword">form_action</field>
+    <field name="model">${5:source_module}.${6:source_model},${7:-1}</field>
+    <field name="action" ref="act_$3"/>
 </record>}${8}
 endsnippet
 
@@ -171,14 +171,14 @@ snippet xmlrelate
     <field name="domain">[('${5:back_ref}', '=', ${6:Eval('id')})${7}]</field>
 </record>
 ${11:<record model="ir.action.act_window.view" id="act_$9_$1_$4_view1">
-  <field name="sequence" eval="${12:1}"/>
-  <field name="view" ref="${13:$4_tree}"/>
-  <field name="act_window" ref="act_$9_$1_$4"/>
+    <field name="sequence" eval="${12:1}"/>
+    <field name="view" ref="${13:$4_tree}"/>
+    <field name="act_window" ref="act_$9_$1_$4"/>
 </record>}
 ${14:<record model="ir.action.act_window.view" id="act_$9_$1_$4_view2">
-  <field name="sequence" eval="${15:$12}"/>
-  <field name="view" ref="${16:${17:other_module}.}${18:$4_form}"/>
-  <field name="act_window" ref="act_$9_$1_$4"/>
+    <field name="sequence" eval="${15:$12}"/>
+    <field name="view" ref="${16:${17:other_module}.}${18:$4_form}"/>
+    <field name="act_window" ref="act_$9_$1_$4"/>
 </record>}
 <record model="ir.action.keyword" id="act_open_$1_$4_keyword1">
     <field name="keyword">form_relate</field>
@@ -250,5 +250,5 @@ snippet sep
 endsnippet
 
 snippet csp
- colspan="${1:4}"${2}
+colspan="${1:4}"${2}
 endsnippet
