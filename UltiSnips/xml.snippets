@@ -19,40 +19,40 @@ endsnippet
 
 snippet xmltree
 <tree string="${1:tree_name}">
-  <field name="${2:field_name}"/>${3}
+    <field name="${2:field_name}"/>${3}
 </tree>${4}
 endsnippet
 
 snippet xmlform
 <form string="${1:form_name}">
-  ${2:content}
+    ${2:content}
 </form>${3}
 endsnippet
 
 snippet tr
 <tryton>
-  ${1:content}
+    ${1:content}
 </tryton>
 endsnippet
 
 snippet trfile
 <?xml version="1.0"?>
 <tryton>
-  <data>
-    ${1}
-  </data>
+    <data>
+        ${1}
+    </data>
 </tryton>
 endsnippet
 
 snippet data
 <data>
-  ${1}
+    ${1}
 </data>
 endsnippet
 
 snippet xpath
 <xpath expr="/${2:path_to_elem}" position="${1:position}">
-  ${3}
+    ${3}
 </xpath>
 endsnippet
 
@@ -83,7 +83,7 @@ endsnippet
 
 snippet grp
 <group id="${1:group_id}">
-  ${2:group_content}
+    ${2:group_content}
 </group>${3}
 endsnippet
 
@@ -97,38 +97,46 @@ ${1}
 endsnippet
 
 snippet refo
-<record model="ir.ui.view" id="$2_view_form">
-  <field name="model">${1:module_name}.${2:model_name}</field>
-  <field name="type">form</field>
-  <field name="name">$2_form</field>
+<record model="ir.ui.view" id="${2:$1}_view_form">
+    <field name="model">${1:model_name}</field>
+    <field name="type">form</field>
+    <field name="name">$2_form</field>
+</record>${3}
+endsnippet
+
+snippet reli
+<record model="ir.ui.view" id="${2:$1}_view_list">
+    <field name="model">${1:model_name}</field>
+    <field name="type">tree</field>
+    <field name="name">$2_list</field>
 </record>${3}
 endsnippet
 
 snippet retr
-<record model="ir.ui.view" id="$2_view_list">
-  <field name="model">${1:module_name}.${2:model_name}</field>
-  <field name="type">tree</field>
-  <field name="name">$2_list</field>
+<record model="ir.ui.view" id="${2:$1}_view_tree">
+    <field name="model">${1:model_name}</field>
+    <field name="type">tree</field>
+    <field name="name">$2_tree</field>
 </record>${3}
 endsnippet
 
-snippet refotr
-<record model="ir.ui.view" id="$2_view_form">
-  <field name="model">${1:module_name}.${2:model_name}</field>
-  <field name="type">form</field>
-  <field name="name">$2_form</field>
+snippet refoli
+<record model="ir.ui.view" id="${2:$1}_view_form">
+    <field name="model">${1:model_name}</field>
+    <field name="type">form</field>
+    <field name="name">$2_form</field>
 </record>
 <record model="ir.ui.view" id="$2_view_list">
-  <field name="model">$1.$2</field>
-  <field name="type">tree</field>
-  <field name="name">$2_list</field>
+    <field name="model">$1</field>
+    <field name="type">tree</field>
+    <field name="name">$2_list</field>
 </record>${3}
 endsnippet
 
 snippet rewi
 <record model="ir.action.wizard" id="act_$3">
-  <field name="name">${1:Wizard Name}</field>
-  <field name="wiz_name">${2:wizard_module}.${3:wizard_model_name}</field>
+    <field name="name">${1:Wizard Name}</field>
+    <field name="wiz_name">${2:wizard_module}.${3:wizard_model_name}</field>
 </record>
 ${4:<record model="ir.action.keyword" id="act_$3_keyword">
   <field name="keyword">form_relate</field>
@@ -139,15 +147,15 @@ endsnippet
 
 snippet ntbk
 <notebook>
-  <page string="${1:page_string}" id="${2:page_id}">
-    ${3}
-  </page>${4}
+    <page string="${1:page_string}" id="${2:page_id}">
+        ${3}
+    </page>${4}
 </notebook>${5}
 endsnippet
 
 snippet ntpg
 <page string="${1:page_string}" id="${2:$1}">
-  ${3}
+    ${3}
 </page>
 endsnippet
 
@@ -158,9 +166,9 @@ endsnippet
 
 snippet xmlrelate
 <record model="ir.action.act_window" id="act_$9_$1_${4:$2}">
-  <field name="name">${3:Name}</field>
-  <field name="res_model">${1:module}.${2:model}</field>
-  <field name="domain">[('${5:back_ref}', '=', ${6:Eval('id')})${7}]</field>
+    <field name="name">${3:Name}</field>
+    <field name="res_model">${1:module}.${2:model}</field>
+    <field name="domain">[('${5:back_ref}', '=', ${6:Eval('id')})${7}]</field>
 </record>
 ${11:<record model="ir.action.act_window.view" id="act_$9_$1_$4_view1">
   <field name="sequence" eval="${12:1}"/>
@@ -173,29 +181,29 @@ ${14:<record model="ir.action.act_window.view" id="act_$9_$1_$4_view2">
   <field name="act_window" ref="act_$9_$1_$4"/>
 </record>}
 <record model="ir.action.keyword" id="act_open_$1_$4_keyword1">
-  <field name="keyword">form_relate</field>
-  <field name="model">${8:source_module}.${9:source_model},${10:-1}</field>
-  <field name="action" ref="act_$9_$1_$4"/>
+    <field name="keyword">form_relate</field>
+    <field name="model">${8:source_module}.${9:source_model},${10:-1}</field>
+    <field name="action" ref="act_$9_$1_$4"/>
 </record>${19}
 endsnippet
 
 snippet crmenu
 <record model="ir.action.act_window" id="act_${1:model_name}">
-  <field name="name">${2:form_name}</field>
-  <field name="res_model">${3:module_name}.${4:model_name}</field>
+    <field name="name">${2:form_name}</field>
+    <field name="res_model">${3:module_name}.${4:model_name}</field>
 </record>
 <record model="ir.action.act_window.view" id="act_${5:$1}_view1">
-  <field name="sequence" eval="${6:seq}"/>
-  <field name="view" ref="${7:$1_tree}"/>
-  <field name="act_window" ref="act_$1"/>
+    <field name="sequence" eval="${6:seq}"/>
+    <field name="view" ref="${7:$1_tree}"/>
+    <field name="act_window" ref="act_$1"/>
 </record>
 <record model="ir.action.act_window.view" id="act_$1_view2">
-  <field name="sequence" eval="${8:seq}"/>
-  <field name="view" ref="${9:$1_form}"/>
-  <field name="act_window" ref="act_$1"/>
+    <field name="sequence" eval="${8:seq}"/>
+    <field name="view" ref="${9:$1_form}"/>
+    <field name="act_window" ref="act_$1"/>
 </record>
 <menuitem parent="${10:parent_menuitem}" sequence="${11:seq}"
-  action="act_$1" id="menu_${12:$1}"/>${13}
+    action="act_$1" id="menu_${12:$1}"/>${13}
 endsnippet
 
 snippet com
