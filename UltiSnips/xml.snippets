@@ -252,3 +252,11 @@ endsnippet
 snippet csp
 colspan="${1:4}"${2}
 endsnippet
+
+snippet tc
+<record model="ir.test_case.instance" id="${1:method_name}">
+    <field name="name">${2:Test Case Name}</field>
+    <field name="method_name">${3:$1}</field>
+    ${4:<field name="test_method_name">${5:$1_test_method}</field>}
+</record>${6}
+endsnippet
