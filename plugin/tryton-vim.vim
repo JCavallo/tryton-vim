@@ -1,3 +1,9 @@
+" Xml validation based on relaxng files
+nnoremap <leader>xf :%w !xmllint --noout --relaxng $VIRTUAL_ENV/tryton-workspace/trytond/trytond/ir/ui/form.rng %:p
+nnoremap <leader>xt :%w !xmllint --noout --relaxng $VIRTUAL_ENV/tryton-workspace/trytond/trytond/ir/ui/tree.rng %:p
+nnoremap <leader>xg :%w !xmllint --noout --relaxng $VIRTUAL_ENV/tryton-workspace/trytond/trytond/ir/ui/graph.rng %:p
+nnoremap <leader>xx :silent 1,$!XMLLINT_INDENT="    " xmllint --format --recover - 2>/dev/null<CR>
+
 " Tryton Request Parser
 python << EOF
 import vim
