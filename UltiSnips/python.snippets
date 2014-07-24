@@ -31,7 +31,7 @@ snippet fich "Tryton Char Field" b
 ${1:field_name} = fields.Char('${2:field_name}'${3:, ${4}})${5}
 endsnippet
 
-snippet fida "Tryton Date " b
+snippet fida "Tryton Date" b
 ${1:field_name} = fields.Date('${2:field_name}'${3:, ${4}})${5}
 endsnippet
 
@@ -39,68 +39,68 @@ snippet fiin "Tryton Integer Field" b
 ${1:field_name} = fields.Integer('${2:field_name}'${3:, ${4}})${5}
 endsnippet
 
-snippet finu "Tryton Numeric " b
+snippet finu "Tryton Numeric" b
 ${1:field_name} = fields.Numeric('${2:field_name}'${3:, digits=${4:(16,
         ${5:Eval('currency_digits')}}})${0}
 endsnippet
 
-snippet fite "Tryton Text ${1:field_name} =
+snippet fite "Tryton Text ${1:field_name}" b
 fields.Text('${2:field_name}'${3:, ${4}})${5}" b
 endsnippet
 
-snippet fimo "Tryton Many2One " b
+snippet fimo "Tryton Many2One" b
 ${1:field_name} = fields.Many2One('${2:model_name}', '${3:field_name}'
     ${4:, ${5}})${6}
 endsnippet
 
-snippet fiom "Tryton One2Many " b
+snippet fiom "Tryton One2Many" b
 ${1:field_name} = fields.One2Many('${2:model_name}', '${3:back_ref}',
     '${4:field_name}'${5:, ${6}})${6}
 endsnippet
 
-snippet fiod "Tryton One2ManyDomain " b
+snippet fiod "Tryton One2ManyDomain" b
 ${1:field_name} = fields.One2ManyDomain('${2:model_name}', '${3:reverse_field_name}',
 '${4:field_name}', domain=[
         ('${5:attribute_name}', '${6:operand}', ${7:value}),${8}
     ],${9})${10}
 endsnippet
 
-snippet fimm "Tryton Many2Many " b
+snippet fimm "Tryton Many2Many" b
 ${1:field_name} = fields.Many2Many('${2:m2m_relation_name}',
     '${3:origin}', '${4:target}', '${5:field_name}'${6:, ${7}})${8}
 endsnippet
 
-snippet fise "Tryton Selection " b
+snippet fise "Tryton Selection" b
 ${1:field_name} = fields.Selection(${2:[('${3}', '${4}')${5:,
     ${6}}]}${7:'${8:selection_method}'}, '${9:name}'${10:, ${11}})${12}
 endsnippet
 
-snippet fifubo "Tryton Function Boolean " b
+snippet fifubo "Tryton Function Boolean" b
 ${1:field_name} = fields.Function(
     fields.Boolean('${2:name}'${3:, ${4}}),
     '${5:get_$1}'${6:, setter='${7:set_$1}'}${8:, searcher='${9:search_$1}'})${10}
 endsnippet
 
-snippet fifuch "Tryton Function Char " b
+snippet fifuch "Tryton Function Char" b
 ${1:field_name} = fields.Function(
     fields.Char('${2:name}'${3:, ${4}}),
     '${5:get_$1}'${6:, setter='${7:set_$1}'}${8:, searcher='${9:search_$1}'})${10}
 endsnippet
 
-snippet fifute "Tryton Function Text " b
+snippet fifute "Tryton Function Text" b
 ${1:field_name} = fields.Function(
     fields.Text('${2:name}'${3:, ${4}}),
     '${5:get_$1}'${6:, setter='${7:set_$1}'}${8:, searcher='${9:search_$1}'})${10}
 endsnippet
 
-snippet fifuse "Tryton Function Selection " b
+snippet fifuse "Tryton Function Selection" b
 ${1:field_name} = fields.Function(
     fields.Selection(${2:[('${3}', '${4}')${5:,
         ${6}}]}${7:'${8:selection_method}'}, '${9:name}'${10:, ${11}}),
     '${12:get_$1}'${13:, setter='${14:set_$1}'}${15:, searcher='${16:search_$1}'})${17}
 endsnippet
 
-snippet fifute "Tryton Function Many2One " b
+snippet fifute "Tryton Function Many2One" b
 ${1:field_name} = fields.Function(
     fields.Many2One('${2:model_name}', '${3:field_name}'
         ${4:, ${5}}),
