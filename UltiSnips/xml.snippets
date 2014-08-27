@@ -53,6 +53,13 @@ snippet fina "<field name=... />" b
 <field name="${1:field_name}"/>${2}
 endsnippet
 
+snippet ficu "field value with currency" b
+<group id="${1:field_name}_value">
+    <field name="$1" xalign="1" xexpand="0"/>
+    <label name="${2:currency_symbol}" string="" xexpand="0" xalign="0"/>
+</group>${3}
+endsnippet
+
 snippet lana "<label name=... />" b
 <label name="${1:field_name}"/>${2}
 endsnippet
@@ -137,7 +144,7 @@ snippet ntbk "<notebook>" b
 endsnippet
 
 snippet ntpg "<page ...>" b
-<page ${1:id="${2:group_id}" name="${3:group_name}"}${4:name="${5:field_name}}>
+<page ${1:id="${2:group_id}" name="${3:group_name}"}${4:name="${5:field_name}"}>
     ${6}
 </page>
 endsnippet
