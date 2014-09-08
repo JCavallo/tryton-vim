@@ -53,6 +53,12 @@ snippet fina "<field name=... />" b
 <field name="${1:field_name}"/>${2}
 endsnippet
 
+snippet finafa "<field name=... factor=... suffix>" b
+<field name="${1:field_name}"${2: factor="${3:100}"}>
+    <suffix ${4:name="${5:currency_symbol}"}${6:string="${7:%}"}/>
+</field>
+endsnippet
+
 snippet ficu "field value with currency" b
 <group id="${1:field_name}_value">
     <field name="$1" xalign="1" xexpand="0"/>

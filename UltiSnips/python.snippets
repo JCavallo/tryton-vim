@@ -160,16 +160,19 @@ ${1:var_name}, = ${2:model_name}.search([
 endsnippet
 
 snippet dep "@field.depends(...)" b
-    @fields.depends('${1}'{$2:, ${3\}})
-    ${4}
+@fields.depends('${1}'${2:, ${3}})
+${4}
+endsnippet
 
 snippet oc "def on_change_...(self):" b
-    def on_change_${1}(self):
-        ${2}
+def on_change_${1}(self):
+    ${2}
+endsnippet
 
 snippet ocw "def on_change_with_...(self, name?):" b
-    def on_change_${1}(self${2, name=None}):
-        ${3}
+def on_change_with_${1}(self${2:, ${3:name=None}}):
+    ${3}
+endsnippet
 
 snippet ermes "cls._error_messages.update(..." b
 cls._error_messages.update({
