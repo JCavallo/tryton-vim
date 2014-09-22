@@ -217,28 +217,28 @@ snippet fico "<field name='context'>...</field>" b
 <field name="context">{'${1:name}': ${2:value}}</field>${3}
 endsnippet
 
-snippet yx "yexpand='...'" b
-yexpand="${1:1}"${2}
+snippet yx "yexpand='...'" i
+ yexpand="${1:1}"${2}
 endsnippet
 
-snippet yf "yfill='...'" b
-yfill="${1:1}"${2}
+snippet yf "yfill='...'" i
+ yfill="${1:1}"${2}
 endsnippet
 
-snippet yxf "yexpand='...' yfill='...'" b
-yexpand="${1:1}" yfill="${2:1}"${3}
+snippet yxf "yexpand='...' yfill='...'" i
+ yexpand="${1:1}" yfill="${2:1}"${3}
 endsnippet
 
-snippet xx "xexpand='...'" b
-xexpand="${1:1}"${2}
+snippet xx "xexpand='...'" i
+ xexpand="${1:1}"${2}
 endsnippet
 
-snippet xf "xfill='...'" b
-xfill="${1:1}"${2}
+snippet xf "xfill='...'" i
+ xfill="${1:1}"${2}
 endsnippet
 
-snippet xxf "xexpand='...' xfill='...'" b
-xexpand="${1:1}" xfill="${2:1}"${3}
+snippet xxf "xexpand='...' xfill='...'" i
+ xexpand="${1:1}" xfill="${2:1}"${3}
 endsnippet
 
 snippet sep "<separator .../>" b
@@ -246,7 +246,7 @@ snippet sep "<separator .../>" b
 endsnippet
 
 snippet csp "colspan='...'" i
-colspan="${1:4}"${2}
+ colspan="${1:4}"${2}
 endsnippet
 
 snippet tc "<record model='ir.test_case.instance' id='...'>" b
