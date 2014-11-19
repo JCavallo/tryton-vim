@@ -44,6 +44,9 @@ function! SearchRelationOne2Many()
     execute g:tr_grep_command . a:request . g:tr_grep_options
 endfunction
 
+nmap <leader>com 0yf df oreview http://rietveld.coopengo.com/jkp$xXOjkk
+nmap <leader>comf 0yf df oreview http://rietveld.coopengo.com/jkp$xXOjkgg0fFf:lyFFf:lldFFjojkkpxXXX
+
 " Other mappings to do
 " nmap <leader>ax <Esc>:Ag -G xml 
 " nmap <leader>agfm <Esc>:Ag "^ *[a-zA-Z_]* = (fields\.Function\()?[\n ]*fields\.Many2One\([\n ]*'
