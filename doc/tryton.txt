@@ -1,0 +1,92 @@
+*tryton.txt* Vim tools to develop on the tryton framework
+
+Version: 1.0
+Author : Jean Cavallo <jean.cavallo@hotmail.fr>
+License: MIT license  {{{
+    Permission is hereby granted, free of charge, to any person obtaining
+    a copy of this software and associated documentation files (the
+    "Software"), to deal in the Software without restriction, including
+    without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to
+    the following conditions:
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+}}}
+
+CONTENTS                                            *tryton-contents*
+
+Introduction                                        |tryton-introduction|
+Install                                             |tryton-install|
+Usage                                               |tryton-usage|
+Variables                                           |tryton-variables|
+
+==============================================================================
+INTRODUCTION                                        *tryton-introduction*
+
+*tryton-vim* is dedicated to helping developers using the tryton
+(http://www.tryton.org) framework. The available features are :
+    - Filetype detection for python and xml files which are part of a tryton
+      project
+    - Specific indentation file for python files which match the project
+      guidelines
+    - Syntax and Folding files for python files
+    - Xml validation / formatting (requires xmllint available)
+    - Code Snippets (requires *UltiSnips* )
+    - Code Search Patterns (requires *unite* )
+
+==============================================================================
+CONTENTS                                            *tryton-install*
+
+Install the distributed files into your Vim script directory which is usually
+~/.vim/. You should consider to use one of the famous package managers for Vim
+like vundle or neobundle to install the plugin.
+
+==============================================================================
+USAGE                                               *tryton-usage*
+==============================================================================
+VARIABLES                                           *tryton-variables*
+
+g:tryton_trytond_default_path                   *g:tryton_trytond_default_path*
+
+        This variable is used to declare the location of the trytond folder.
+        It is necessary for xml validation features, as we use the rng
+        validation files from this folder.
+
+        If not set, it will try to use the installed trytond in virtualenv,
+        and fail if not available
+
+        default: not set
+
+g:tryton_default_mappings                           *g:tryton_default_mappings*
+
+        Set to 0 to manually manage plugin mappings
+
+        default: 1
+
+g:tryton_xml_indent                                 *g:tryton_xml_indent*
+
+        Defines the indentation to use for xml formatting.
+
+        default: "    "
+
+g:tryton_grep_command                               *g:tryton_grep_command*
+
+        The base command to use for search features
+
+        default: 'Unite grep:.:-inR:'
+
+g:tryton_grep_options                               *g:tryton_grep_options*
+
+        The options to use for search features
+
+        default: " -auto-preview -no-split -no-empty"
+------------------------------------------------------------------------------
