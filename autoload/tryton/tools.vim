@@ -1,5 +1,5 @@
 " #############################################################################
-" File: tryton-vim.vim
+" File: tools.vim
 " Author: Jean Cavallo <jean.cavallo@hotmail.fr>
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
@@ -23,21 +23,25 @@
 " }}}
 " #############################################################################
 
-let g:tryton_xml_indent = "    "
-let g:tryton_grep_command = 'Unite grep:.:-inR:'
-let g:tryton_grep_options =" -auto-preview -no-split -no-empty"
+function! tryton#tools#GetTrytondPath()  " {{{
+    if exists("g:tryton_trytond_path") &&
+            \ isdirectory(expand(g:tryton_trytond_path))
+        return g:tryton_trytond_path
+    elseif isdirectory(expand("$VIRTUAL_ENV/lib/python-2.7/site-packages/trytond"))
+        return "$VIRTUAL_ENV/lib/python-2.7/site-packages/trytond"
+    else
+        echoerr "Please set the g:tryton_trytond_path variable"
+        finish
+    endif
+endfunction  " }}}
 
-if !exists("g:tryton_default_mappings") || g:tryton_default_mappings
-    nnoremap <leader>xf :call tryton#tools#ValidateXml("form")<CR>
-    nnoremap <leader>xt :call tryton#tools#ValidateXml("tree")<CR>
-    nnoremap <leader>xg :call tryton#tools#ValidateXml("graph")<CR>
-    nnoremap <leader>xx :call tryton#tools#FormatXml()<CR>
-    nnoremap <leader>ac :call tryton#search#SearchClass()<CR>
-    nnoremap <leader>an :call tryton#search#SearchModel()<CR>
-    nnoremap <leader>ad :call tryton#search#SearchFunction()<CR>
-    nnoremap <leader>af :call tryton#search#SearchField()<CR>
-    nnoremap <leader>arm :call tryton#search#SearchMany2One(0)<CR>
-    nnoremap <leader>aro :call tryton#search#SearchOne2Many(0)<CR>
-    nnoremap <leader>arfm :call tryton#search#SearchMany2One(1)<CR>
-    nnoremap <leader>arfo :call tryton#search#SearchOne2Many(1)<CR>
-endif
+function! tryton#tools#ValidateXml(view_kind)  " {{{
+    execute ":%w !xmllint --noout --relaxng "
+        \ . tryton#tools#GetTrytondPath() . "/trytond/ir/ui/" . a:view_kind
+        \ . ".rng %:p"
+endfunction  " }}}
+
+function! tryton#tools#FormatXml()  " {{{
+    execute ':silent 1, $!XMLLINT_INDENT="' . g:tryton_xml_indent
+        \ '" xmllint --format --recover - 2>/dev/null'
+endfunction  " }}}
