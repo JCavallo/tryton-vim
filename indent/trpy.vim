@@ -41,11 +41,11 @@ let b:did_indent = "trpy"
 setlocal nolisp          " Make sure lisp indenting doesn't supersede us
 setlocal autoindent      " indentexpr isn't much help otherwise
 
-setlocal indentexpr=GetPythonIndent(v:lnum)
+setlocal indentexpr=GetTrytonIndent(v:lnum)
 setlocal indentkeys+=<:>,=elif,=except
 
 " Only define the function once.
-if exists("*GetPythonIndent")
+if exists("*GetTrytonIndent")
     finish
 endif
 let s:keepcpo= &cpo
@@ -54,7 +54,7 @@ set cpo&vim
 " Come here when loading the script the first time.
 let s:maxoff = 50      " maximum number of lines to look backwards for ()
 
-function GetPythonIndent(lnum)  " {{{
+function GetTrytonIndent(lnum)  " {{{
 
     " If this line is explicitly joined: If the previous line was also joined,
     " line it up with that one, otherwise add on 'shiftwidth'
@@ -157,7 +157,7 @@ function GetPythonIndent(lnum)  " {{{
     " on this line, indent this line
     if pline =~ '^\s*\(if\|else\|elif\|with\|class\|def\|for\|try\|except\|finally\).*:\s*$'
         " Except if we are inside a parenthsis (list comprehensions)
-        if !p
+        if p <= 0
             return plindent + &sw
         endif
     endif  " }}}
