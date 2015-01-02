@@ -22,22 +22,67 @@
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
 " #############################################################################
+let s:save_cpo = &cpo
+set cpo&vim
 
 let g:tryton_xml_indent = "    "
 let g:tryton_grep_command = 'Unite grep:.:-inR:'
 let g:tryton_grep_options = " -auto-preview -no-split -no-empty"
 
 if !exists("g:tryton_default_mappings") || g:tryton_default_mappings
-    nnoremap <leader>xf :call tryton#tools#ValidateXml("form")<CR>
-    nnoremap <leader>xt :call tryton#tools#ValidateXml("tree")<CR>
-    nnoremap <leader>xg :call tryton#tools#ValidateXml("graph")<CR>
-    nnoremap <leader>xx :call tryton#tools#FormatXml()<CR>
-    nnoremap <leader>ac :call tryton#search#SearchClass()<CR>
-    nnoremap <leader>an :call tryton#search#SearchModel()<CR>
-    nnoremap <leader>ad :call tryton#search#SearchFunction()<CR>
-    nnoremap <leader>af :call tryton#search#SearchField()<CR>
-    nnoremap <leader>arm :call tryton#search#SearchMany2One(0)<CR>
-    nnoremap <leader>aro :call tryton#search#SearchOne2Many(0)<CR>
-    nnoremap <leader>arfm :call tryton#search#SearchMany2One(1)<CR>
-    nnoremap <leader>arfo :call tryton#search#SearchOne2Many(1)<CR>
+    " TODO : investigate why
+    "          nnoremap <leader>xf <Plug>(tryton-validate-xmlform)
+    " does not work properly, when it works in my vimrc file
+    nnoremap <silent><leader>xf
+        \ :execute "normal \<Plug>(tryton-validate-xmlform)"<CR>
+    nnoremap <silent><leader>xt
+        \ :execute "normal \<Plug>(tryton-validate-xmltree)"<CR>
+    nnoremap <silent><leader>xg
+        \ :execute "normal \<Plug>(tryton-validate-xmlgraph)"<CR>
+    nnoremap <silent><leader>xx
+        \ :execute "normal \<Plug>(tryton-xml-format)"<CR>
+    nnoremap <silent><leader>ac
+        \ :execute "normal \<Plug>(tryton-search-class)"<CR>
+    nnoremap <silent><leader>an
+        \ :execute "normal \<Plug>(tryton-search-model)"<CR>
+    nnoremap <silent><leader>ad
+        \ :execute "normal \<Plug>(tryton-search-function)"<CR>
+    nnoremap <silent><leader>af
+        \ :execute "normal \<Plug>(tryton-search-field)"<CR>
+    nnoremap <silent><leader>arm
+        \ :execute "normal \<Plug>(tryton-search-many2one)"<CR>
+    nnoremap <silent><leader>aro
+        \ :execute "normal \<Plug>(tryton-search-one2many)"<CR>
+    nnoremap <silent><leader>arfm
+        \ :execute "normal \<Plug>(tryton-searchall-many2one)"<CR>
+    nnoremap <silent><leader>arfo
+        \ :execute "normal \<Plug>(tryton-searchall-one2many)"<CR>
 endif
+
+nnoremap <silent><Plug>(tryton-validate-xmlform)
+    \ :<C-U>call tryton#tools#ValidateXml('form')<CR>
+noremap <silent><Plug>(tryton-validate-xmltree)
+    \ :<C-U>call tryton#tools#ValidateXml('tree')<CR>
+noremap <silent><Plug>(tryton-validate-xmlgraph)
+    \ :<C-U>call tryton#tools#ValidateXml('graph')<CR>
+noremap <silent><Plug>(tryton-xml-format)
+    \ :<C-U>call tryton#tools#FormatXml()<CR>
+noremap <silent><Plug>(tryton-search-class)
+    \ :<C-U>call tryton#search#SearchClass()<CR>
+noremap <silent><Plug>(tryton-search-model)
+    \ :<C-U>call tryton#search#SearchModel()<CR>
+noremap <silent><Plug>(tryton-search-function)
+    \ :<C-U>call tryton#search#SearchFunction()<CR>
+noremap <silent><Plug>(tryton-search-field)
+    \ :<C-U>call tryton#search#SearchField()<CR>
+noremap <silent><Plug>(tryton-search-many2one)
+    \ :<C-U>call tryton#search#SearchMany2One(0)<CR>
+noremap <silent><Plug>(tryton-search-one2many)
+    \ :<C-U>call tryton#search#SearchOne2Many(0)<CR>
+noremap <silent><Plug>(tryton-searchall-many2one)
+    \ :<C-U>call tryton#search#SearchMany2One(1)<CR>
+noremap <silent><Plug>(tryton-searchall-one2many)
+    \ :<C-U>call tryton#search#SearchOne2Many(1)<CR>
+
+let &cpo = s:save_cpo
+unlet s:save_cpo

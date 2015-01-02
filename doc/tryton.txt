@@ -68,7 +68,7 @@ tryton#tools#ValidateXml(view_type)                 *tryton-validate-xml*
 
     Command line output indicates the detected errors.
 
-    TODO: map error to location list
+    TODO: map errors to location list
 
 tryton#tools#FormatXML()                            *tryton-format-xml*
 
@@ -149,19 +149,91 @@ g:tryton_grep_options                               *g:tryton_grep_options*
 ==============================================================================
 MAPPINGS                                            *tryton-mappings*
 
+You can remap the following mappings to suit your needs the default mappings
+are not good for you :
+
+<Plug>(tryton-validate-xmlform)             *<Plug>(tryton-validate-xmlform)*
+
+    Performs rng validation of form views. See *tryton-validate-xml*
+
+<Plug>(tryton-validate-xmltree)             *<Plug>(tryton-validate-xmltree)*
+
+    Performs rng validation of tree views. See *tryton-validate-xml*
+
+<Plug>(tryton-validate-xmlgraph)            *<Plug>(tryton-validate-xmlgraph)*
+
+    Performs rng validation of graph views. See *tryton-validate-xml*
+
+<Plug>(tryton-xml-format)                   *<Plug>(tryton-xml-format)*
+
+    Uses xmllint to format the current xml file
+
+<Plug>(tryton-search-class)                 *<Plug>(tryton-search-class)*
+
+    Search the current directory for the given Class name.
+
+    See *tryton-search-class*
+
+<Plug>(tryton-search-model)                 *<Plug>(tryton-search-model)*
+
+    Search the current directory for the given model name definitions.
+
+    See *tryton-search-model*
+
+<Plug>(tryton-search-field)                 *<Plug>(tryton-search-field)*
+
+    Search the current directory for a field description matching the given
+    field name.
+
+    See *tryton-search-field*
+
+<Plug>(tryton-search-function)              *<Plug>(tryton-search-function)*
+
+    Search the current directory for a function definition matching the
+    provided function name.
+
+    See *tryton-search-function*
+
+<Plug>(tryton-search-many2one)              *<Plug>(tryton-search-many2one)*
+
+    Search the current directory for Many2One fields pointing to the given
+    model name.
+
+    See *tryton-search-many2one*
+
+<Plug>(tryton-search-one2many)              *<Plug>(tryton-search-one2many)*
+
+    Search the current directory for One2Many field using the given model
+    name.
+
+    See *tryton-search-one2many*
+
+<Plug>(tryton-searchall-many2one)           *<Plug>(tryton-searchall-many2one)*
+
+    Same as *<Plug>(tryton-search-many2one)* but includes function fields.
+
+    See *tryton-search-many2one*
+
+<Plug>(tryton-searchall-one2many)           *<Plug>(tryton-searchall-one2many)*
+
+    Same as *<Plug>(tryton-search-one2many)* but includes function fields.
+
+    See *tryton-search-one2many*
+
 Mappings that are set if *g:tryton_default_mappings* is set are :
 
-    <Leader>xf           tryton#tools#ValidateXml("form")
-    <Leader>xt           tryton#tools#ValidateXml("tree")
-    <Leader>xg           tryton#tools#ValidateXml("graph")
-    <Leader>xx           tryton#tools#FormatXml()
-    <Leader>ac           tryton#search#SearchClass()
-    <Leader>an           tryton#search#SearchModel()
-    <Leader>ad           tryton#search#SearchFunction()
-    <Leader>af           tryton#search#SearchField()
-    <Leader>arm          tryton#search#SearchMany2One(0)
-    <Leader>aro          tryton#search#SearchOne2Many(0)
-    <Leader>arfm         tryton#search#SearchMany2One(1)
-    <Leader>arfo         tryton#search#SearchOne2Many(1)
+>
+    <Leader>xf          <Plug>(tryton-validate-xmlform)
+    <Leader>xt          <Plug>(tryton-validate-xmltree)
+    <Leader>xg          <Plug>(tryton-validate-xmlgraph)
+    <Leader>xx          <Plug>(tryton-xml-format)
+    <Leader>ac          <Plug>(tryton-search-class)
+    <Leader>an          <Plug>(tryton-search-model)
+    <Leader>ad          <Plug>(tryton-search-function)
+    <Leader>af          <Plug>(tryton-search-field)
+    <Leader>arm         <Plug>(tryton-search-many2one)
+    <Leader>aro         <Plug>(tryton-search-one2many)
+    <Leader>arfm        <Plug>(tryton-searchall-many2one)
+    <Leader>arfo        <Plug>(tryton-searchall-one2many)
 
 ==============================================================================

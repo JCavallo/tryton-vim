@@ -30,15 +30,18 @@ function! tryton#tools#GetTrytondPath()  " {{{
     elseif isdirectory(expand("$VIRTUAL_ENV/lib/python-2.7/site-packages/trytond"))
         return "$VIRTUAL_ENV/lib/python-2.7/site-packages/trytond"
     else
-        echoerr "Please set the g:tryton_trytond_path variable"
-        finish
+        echoerr "Please set the g:tryton_trytond_path variable to a valid path"
+        return 0
     endif
 endfunction  " }}}
 
 function! tryton#tools#ValidateXml(view_kind)  " {{{
-    execute ":%w !xmllint --noout --relaxng "
-        \ . tryton#tools#GetTrytondPath() . "/trytond/ir/ui/" . a:view_kind
-        \ . ".rng %:p"
+    let path = tryton#tools#GetTrytondPath()
+    if path =~ ".*trytond"
+        execute ":%w !xmllint --noout --relaxng "
+            \ . path . "/trytond/ir/ui/" . a:view_kind
+            \ . ".rng %:p"
+    endif
 endfunction  " }}}
 
 function! tryton#tools#FormatXml()  " {{{
