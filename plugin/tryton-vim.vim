@@ -25,7 +25,7 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-let g:tryton_xml_indent = "    "
+let g:tryton_xml_indent = "   "
 let g:tryton_grep_command = 'Unite grep:.:-inR:'
 let g:tryton_grep_options = " -auto-preview -no-split -no-empty"
 
