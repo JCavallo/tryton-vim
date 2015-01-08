@@ -23,6 +23,32 @@
 " }}}
 " #############################################################################
 
+function! tryton#tools#browser_cmd()  " {{{
+    for var_def in [['tryton_server_host_name', 'Tryton Server Hostname'],
+            \ ['tryton_server_port', 'Tryton Server Port'],
+            \ ['tryton_server_database', 'Tryton Server Database'],
+            \ ['tryton_server_login', 'Tryton Server Login'],
+            \ ['tryton_server_password', 'Tryton Server Password']]
+        if !exists('g:' . var_def[0])
+            execute 'let g:' . var_def[0] . " = unite#util#input('" .
+                \ var_def[1] . " : ')"
+        endif
+    endfor
+    return g:tryton_parser_path . ' http://' .
+        \ g:tryton_server_login . ':' . g:tryton_server_password .
+        \ '@' . g:tryton_server_host_name . ':' .
+        \ g:tryton_server_port . '/' . g:tryton_server_database . ' '
+endfunction  " }}}
+
+function! tryton#tools#pad_string(str_to_pad, max_len)  " {{{
+    return a:str_to_pad[:a:max_len] .
+        \ repeat(' ', a:max_len - len(a:str_to_pad))
+endfunction  " }}}
+
+function! tryton#tools#run_cmd(cmd)  " {{{
+    return system(tryton#tools#browser_cmd() . a:cmd)
+endfunction  " }}}
+
 function! tryton#tools#GetTrytondPath()  " {{{
     if exists("g:tryton_trytond_path") &&
             \ isdirectory(expand(g:tryton_trytond_path))

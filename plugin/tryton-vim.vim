@@ -25,9 +25,12 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+let g:tryton_nested_fields = ['fields']
 let g:tryton_xml_indent = "   "
 let g:tryton_grep_command = 'Unite grep:.:-inR:'
 let g:tryton_grep_options = " -auto-preview -no-split -no-empty"
+let g:tryton_parser_path = expand('<sfile>:p:h') . '/tryton_browser.py'
+let g:tryton_server_password = 'ugip_coopengo'
 
 if !exists("g:tryton_default_mappings") || g:tryton_default_mappings
     " TODO : investigate why
