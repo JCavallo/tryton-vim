@@ -1,5 +1,5 @@
 " #############################################################################
-" File: tryton_detail.vim
+" File: tryton_detail_iterable.vim
 " Author: Jean Cavallo <jean.cavallo@hotmail.fr>
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
@@ -25,24 +25,27 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! unite#kinds#tryton_detail#define()
+function! unite#kinds#tryton_detail_iterable#define()
     return s:kind
 endfunction
 
 let s:kind  =  {
-    \ 'name': 'tryton_detail',
-    \ 'default_action': 'nope',
+    \ 'name': 'tryton_detail_iterable',
+    \ 'default_action': 'go_down',
     \ 'action_table': {},
-    \ 'parents': [],
+    \ 'parents': ['common'],
     \ }
 
-let s:kind.action_table.nope  =  {
+let s:kind.action_table.go_down  =  {
     \ 'is_selectable': 1,
     \ 'is_quit': 0,
     \ }
 
-function! s:kind.action_table.nope.func(candidates)
-    execute "q"
+function! s:kind.action_table.go_down.func(candidates)
+    call unite#start_temporary([['tryton_details',
+                \ a:candidates[0].tryton__path]], {
+            \ 'start_insert': 0},
+        \ )
 endfunction
 
 let &cpo = s:save_cpo

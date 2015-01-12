@@ -27,6 +27,9 @@ CONTENTS                                            *tryton-contents*
 Introduction                                        |tryton-introduction|
 Install                                             |tryton-install|
 Usage                                               |tryton-usage|
+    Tools                                           |tryton-tools|
+    Searching                                       |tryton-searching|
+    Unite Sources                                   |tryton-sources|
 Variables                                           |tryton-variables|
 Mappings                                            |tryton-mappings|
 
@@ -60,6 +63,9 @@ Detection is performed by looking for the "tryton" keyword in the file (which
 covers 90% of the use cases). Another test is performed on xml files because
 they can be view descriptors, which usually do not contains the "tryton" word
 
+-----------------------------------------------------------------------------
+TOOLS                                               *tryton-tools*
+
 tryton#tools#ValidateXml(view_type)                 *tryton-validate-xml*
 
     Performs rng validation for the given view_type, which must be one of
@@ -73,6 +79,9 @@ tryton#tools#ValidateXml(view_type)                 *tryton-validate-xml*
 tryton#tools#FormatXML()                            *tryton-format-xml*
 
     Format the current xml file using xmllint
+
+-----------------------------------------------------------------------------
+SEARCHING                                           *tryton-searching*
 
 tryton#search#SearchClass()                         *tryton-search-class*
 
@@ -107,6 +116,66 @@ tryton#search#SearchOne2Many(include_functions)     *tryton-search-one2many*
     all One2Many fiels that refers to this model. The "include_functions"
     parameter must be True to include function fiels in the search
 
+-----------------------------------------------------------------------------
+SOURCES                                             *tryton-sources*
+
+This plugin adds two sources for unite. Those sources are designed to connect
+to a running tryton server to extract informations about the model. They
+requires that the "debug" module be installed on the server. It also requires
+python available in vim (it uses the shipped in tryton_browser script) and
+proteus available.
+
+The sources use a cache to avoid too many requests to the server, so the first
+call on a new vim instance (or force refresh using *unite-redraw* ) may be
+slow.
+
+The server must be available using the xml_rpc protocol enabled, and some
+configuration is required on the vim side (see *tryton-variables* ). Any non
+configured information (typically the server password) will be asked and
+stored once at runtime.
+
+The main available source is "tryton_details". You can invoke it with :
+>
+   :Unite tryton_details
+>
+By default (no arguments), the source displays all models in the database.
+This source accepts as a first argument a "/" separated path inside the tryton
+model. So for instance, using :
+>
+   :Unite tryton_details:account.account/fields
+>
+will display the list of the fields of the "account.account" model. The
+default action on tryton_details is "go_down", which means "browse further".
+So hitting <Enter> on a model candidate will display its details, and also
+some nested fields you can go further into, like "fields" or "mro".
+
+Some useful commands :
+>
+    " Displays all models
+    :Unite tryton_details
+
+    " Displays all data on the account.account model
+    :Unite tryton_details:account.account
+
+    " List all fields of model account.account
+    :Unite tryton_details:account.account/fields
+
+    " Specific info on the name field of account.account model
+    :Unite tryton_details:account.account/fields/name
+
+    " Show the class order for account.account (with modules override !)
+    :Unite tryton_details:account.account/mro
+
+The "mro" candidates are jumpable (though the default action is still "go
+down") so you can use the action menu to jump in.
+
+Another source that may be useful is the "tryton_field" source. It is used to
+directly access the list of all field definitions in the database. Typical
+usage would be :
+
+>
+    :UniteWithCursorWord tryton_field
+
 
 ==============================================================================
 VARIABLES                                           *tryton-variables*
@@ -115,12 +184,46 @@ g:tryton_trytond_default_path                   *g:tryton_trytond_default_path*
 
         This variable is used to declare the location of the trytond folder.
         It is necessary for xml validation features, as we use the rng
-        validation files from this folder.
+        validation files from this folder. It also allows to easily jump in
+        to class definition in the mro source.
 
         If not set, it will try to use the installed trytond in virtualenv,
         and fail if not available
 
         default: not set
+
+g:tryton_server_host_name                           *g:tryton_server_host_name*
+
+        Set the tryton server to connect to.
+
+        default: Not set
+
+g:tryton_server_port                                *g:tryton_server_port*
+
+        Set the tryton server port.
+
+        default: Not set
+
+g:tryton_server_database                            *g:tryton_server_database*
+
+        Set the tryton database to connect to.
+
+        default: Not set
+
+g:tryton_server_login                               *g:tryton_server_login*
+
+        Set the login to use to connect to the server
+
+        default: Not set
+
+g:tryton_server_password                            *g:tryton_server_password*
+
+        Used to store the user password to connect to the server.
+
+        Warning : Though it may be useful to set this in your vimrc, make sure
+        the password is not that of a critical / production server.
+
+        default: Not set
 
 g:tryton_default_mappings                           *g:tryton_default_mappings*
 

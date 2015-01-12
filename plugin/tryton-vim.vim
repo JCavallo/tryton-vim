@@ -25,12 +25,21 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-let g:tryton_nested_fields = ['fields']
 let g:tryton_xml_indent = "   "
 let g:tryton_grep_command = 'Unite grep:.:-inR:'
 let g:tryton_grep_options = " -auto-preview -no-split -no-empty"
 let g:tryton_parser_path = expand('<sfile>:p:h') . '/tryton_browser.py'
-let g:tryton_server_password = 'ugip_coopengo'
+
+let g:tryton_path_config = {
+    \ "word__extract": "format_model",
+    \ "fields": {
+        \ "word__extract": "format_field",
+        \ },
+    \ "mro": {
+        \ "word__extract": "format_mro",
+        \ "action__extract": "action_mro",
+        \ },
+    \ }
 
 if !exists("g:tryton_default_mappings") || g:tryton_default_mappings
     " TODO : investigate why

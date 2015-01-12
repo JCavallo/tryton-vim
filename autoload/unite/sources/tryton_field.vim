@@ -36,30 +36,15 @@ let s:source = {
     \ }
 
 function! s:source.gather_candidates(args, context) "{{{
-    call unite#sources#tryton_model#load_data(a:context)
-    let mname = get(a:args, 0, '')
-    if mname != ''
-        let models = [mname]
-    else
-        let models = keys(g:tryton_data_cache)
-    endif
-
+    call unite#sources#tryton_details#load_data(a:context)
+    let models = keys(g:tryton_data_cache)
     let candidates = []
     for model_name in sort(models)
         let mdata = g:tryton_data_cache[model_name]
         for fname in sort(keys(mdata.fields))
-            let fdata = mdata.fields[fname]
-            let field_word = tryton#tools#pad_string(fdata.string, 40) . ' ' .
-                \ tryton#tools#pad_string('(' . fdata.kind . ')', 15) . ' ' .
-                \ tryton#tools#pad_string(fname, 40) . ' ' .
-                \ model_name
-            call add(candidates, {
-                    \ 'word': field_word,
-                    \ 'kind': 'tryton_field',
-                    \ 'source__info': {
-                        \ 'model_name': model_name,
-                        \ 'field_name': fname,
-                        \ }})
+            let path = [model_name, 'fields', fname]
+            call add(candidates,
+                \ unite#sources#tryton_details#new_candidate(path))
         endfor
     endfor
     return candidates

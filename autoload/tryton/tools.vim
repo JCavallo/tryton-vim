@@ -29,9 +29,9 @@ function! tryton#tools#browser_cmd()  " {{{
             \ ['tryton_server_database', 'Tryton Server Database'],
             \ ['tryton_server_login', 'Tryton Server Login'],
             \ ['tryton_server_password', 'Tryton Server Password']]
-        if !exists('g:' . var_def[0])
+        if !exists('g:' . var_def[0]) || eval('g:' . var_def[0]) ==# ""
             execute 'let g:' . var_def[0] . " = unite#util#input('" .
-                \ var_def[1] . " : ')"
+                \ var_def[1] . " (set g:" . var_def[0] . " to avoid this) : ')"
         endif
     endfor
     return g:tryton_parser_path . ' http://' .
@@ -40,21 +40,55 @@ function! tryton#tools#browser_cmd()  " {{{
         \ g:tryton_server_port . '/' . g:tryton_server_database . ' '
 endfunction  " }}}
 
-function! tryton#tools#pad_string(str_to_pad, max_len)  " {{{
-    return a:str_to_pad[:a:max_len] .
-        \ repeat(' ', a:max_len - len(a:str_to_pad))
+function! tryton#tools#pad_string(str_to_pad, max_len, ...)  " {{{
+    " Optional argument set to 1 to left pad
+    if len(a:000) && a:000[0] == 1
+        return repeat(' ', a:max_len - len(a:str_to_pad)) .
+            \ a:str_to_pad[:a:max_len]
+    else
+        return a:str_to_pad[:a:max_len - 1] .
+            \ repeat(' ', a:max_len - len(a:str_to_pad))
+    endif
 endfunction  " }}}
 
 function! tryton#tools#run_cmd(cmd)  " {{{
     return system(tryton#tools#browser_cmd() . a:cmd)
 endfunction  " }}}
 
+function! tryton#tools#get_data_from_path(path)  " {{{
+    let data = g:tryton_data_cache
+    for path_value in a:path
+        let data = data[path_value]
+    endfor
+    return data
+endfunction  " }}}
+
+function! tryton#tools#get_conf_from_path(path)  " {{{
+    if len(a:path) < 2
+        " Model
+        let config = g:tryton_path_config
+    elseif has_key(g:tryton_path_config, a:path[-2])
+        let config = g:tryton_path_config[a:path[-2]]
+    else
+        let config = {}
+    endif
+    return config
+endfunction  " }}}
+
+function! tryton#tools#convert_path(path)  " {{{
+    if type(a:path) == 3
+        return a:path
+    endif
+    return split(a:path, "/")
+endfunction  " }}}
+
 function! tryton#tools#GetTrytondPath()  " {{{
     if exists("g:tryton_trytond_path") &&
             \ isdirectory(expand(g:tryton_trytond_path))
-        return g:tryton_trytond_path
+        return
     elseif isdirectory(expand("$VIRTUAL_ENV/lib/python-2.7/site-packages/trytond"))
-        return "$VIRTUAL_ENV/lib/python-2.7/site-packages/trytond"
+        let g:tryton_trytond_path = "$VIRTUAL_ENV/lib/python-2.7/site-packages/trytond"
+        return
     else
         echoerr "Please set the g:tryton_trytond_path variable to a valid path"
         return 0
@@ -62,10 +96,10 @@ function! tryton#tools#GetTrytondPath()  " {{{
 endfunction  " }}}
 
 function! tryton#tools#ValidateXml(view_kind)  " {{{
-    let path = tryton#tools#GetTrytondPath()
-    if path =~ ".*trytond"
+    call tryton#tools#GetTrytondPath()
+    if g:tryton_trytond_path =~ ".*trytond"
         execute ":%w !xmllint --noout --relaxng "
-            \ . path . "/trytond/ir/ui/" . a:view_kind
+            \ . g:tryton_trytond_path . "/trytond/ir/ui/" . a:view_kind
             \ . ".rng %:p"
     endif
 endfunction  " }}}
