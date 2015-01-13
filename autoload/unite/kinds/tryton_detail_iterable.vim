@@ -42,7 +42,7 @@ let s:kind.action_table.go_down  =  {
     \ }
 
 function! s:kind.action_table.go_down.func(candidates)
-    call unite#start_temporary([['tryton_details',
+    call unite#start_script([['tryton_details',
                 \ a:candidates[0].tryton__path]], {
             \ 'start_insert': 0},
         \ )
