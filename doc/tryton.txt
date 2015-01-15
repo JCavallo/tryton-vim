@@ -323,6 +323,10 @@ are not good for you :
 
     See *tryton-search-one2many*
 
+<Plug>(tryton-browse-current-model)     *<Plug>(tryton-browse-current-model)*
+
+    Start the *tryton-details* source on the current model
+
 Mappings that are set if *g:tryton_default_mappings* is set are :
 
 >
@@ -338,5 +342,6 @@ Mappings that are set if *g:tryton_default_mappings* is set are :
     <Leader>aro         <Plug>(tryton-search-one2many)
     <Leader>arfm        <Plug>(tryton-searchall-many2one)
     <Leader>arfo        <Plug>(tryton-searchall-one2many)
+    <Leader>bm          <Plug>(tryton-browse-current-model)
 
 ==============================================================================

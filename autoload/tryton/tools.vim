@@ -75,6 +75,15 @@ function! tryton#tools#get_conf_from_path(path)  " {{{
     return config
 endfunction  " }}}
 
+function! tryton#tools#get_current_model()  " {{{
+    let lnbr = search("^\\s*__name__ = \'.*\'", 'bn')
+    if lnbr == 0
+        return ""
+    endif
+    let line = getbufline('.', lnbr)[0]
+    return matchstr(line, " *__name__ = [\"']\\zs.*\\ze[\"']")
+endfunction  " }}}
+
 function! tryton#tools#convert_path(path)  " {{{
     if type(a:path) == 3
         return a:path

@@ -70,6 +70,8 @@ if !exists("g:tryton_default_mappings") || g:tryton_default_mappings
         \ :execute "normal \<Plug>(tryton-searchall-many2one)"<CR>
     nnoremap <silent><leader>arfo
         \ :execute "normal \<Plug>(tryton-searchall-one2many)"<CR>
+    nnoremap <silent><leader>bcm
+        \ :execute "normal \<Plug>(tryton-browse-current-model)"<CR>
 endif
 
 nnoremap <silent><Plug>(tryton-validate-xmlform)
@@ -96,6 +98,9 @@ noremap <silent><Plug>(tryton-searchall-many2one)
     \ :<C-U>call tryton#search#SearchMany2One(1)<CR>
 noremap <silent><Plug>(tryton-searchall-one2many)
     \ :<C-U>call tryton#search#SearchOne2Many(1)<CR>
+nnoremap <silent><Plug>(tryton-browse-current-model)
+    \ :<C-U>call unite#start_script([['tryton_details',
+        \ tryton#tools#get_current_model()]])<CR>
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
