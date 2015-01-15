@@ -118,6 +118,20 @@ function! unite#sources#tryton_details#action_mro(path, data)  " {{{
     return [candidate_kind, candidate_data]
 endfunction  " }}}
 
+function! unite#sources#tryton_details#action_field(path, data)  " {{{
+    let [candidate_kind, candidate_data] =
+        \ unite#sources#tryton_details#action_default(a:path, a:data)
+    if get(a:data, 'target_model', "") != ""
+        let candidate_kind = ['tryton_model'] + candidate_kind
+        let candidate_data['tryton__model'] = a:data['target_model']
+    endif
+    if get(a:data, 'target_field', "") != ""
+        let candidate_kind = ['tryton_model_field'] + candidate_kind
+        let candidate_data['tryton__field'] = a:data['target_field']
+    endif
+    return [candidate_kind, candidate_data]
+endfunction  " }}}
+
 function! unite#sources#tryton_details#new_candidate(path)  " {{{
     let word = s:get_candidate_word(a:path)
     let [kind, data] = s:get_candidate_actions(a:path)

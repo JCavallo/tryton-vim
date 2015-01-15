@@ -34,6 +34,7 @@ let g:tryton_path_config = {
     \ "word__extract": "format_model",
     \ "fields": {
         \ "word__extract": "format_field",
+        \ "action__extract": "action_field",
         \ },
     \ "mro": {
         \ "word__extract": "format_mro",

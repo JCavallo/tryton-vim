@@ -1,5 +1,5 @@
 " #############################################################################
-" File: tryton_detail_iterable.vim
+" File: tryton_model_field.vim
 " Author: Jean Cavallo <jean.cavallo@hotmail.fr>
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
@@ -25,25 +25,26 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! unite#kinds#tryton_detail_iterable#define()  " {{{
+function! unite#kinds#tryton_model_field#define()  " {{{
     return s:kind
 endfunction  " }}}
 
 let s:kind = {
-    \ 'name': 'tryton_detail_iterable',
-    \ 'default_action': 'go_down',
+    \ 'name': 'tryton_model_field',
+    \ 'default_action': 'jump_to_field',
     \ 'action_table': {},
-    \ 'parents': ['common'],
+    \ 'parents': ['tryton_model'],
     \ }
 
-let s:kind.action_table.go_down = {
+let s:kind.action_table.jump_to_field = {
     \ 'is_selectable': 1,
-    \ 'is_quit': 0,
+    \ 'is_quit': 1,
     \ }
 
-function! s:kind.action_table.go_down.func(candidates)  " {{{
+function! s:kind.action_table.jump_to_field.func(candidates)  " {{{
     call unite#start_script([['tryton_details',
-                \ a:candidates[0].tryton__path]], {
+                \ [a:candidates[0].tryton__model, 'fields',
+                    \ a:candidates[0].tryton__field]]], {
             \ 'start_insert': 0},
         \ )
 endfunction  " }}}
