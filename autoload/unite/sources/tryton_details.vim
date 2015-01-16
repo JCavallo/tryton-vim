@@ -42,7 +42,7 @@ function! unite#sources#tryton_details#load_data(context)  " {{{
     if exists('g:tryton_data_cache')
         unlet g:tryton_data_cache
     endif
-    let model_raw_data = tryton#tools#run_cmd('extract all')
+    let model_raw_data = tryton#tools#run_cmd('extract model')
     python import json
     let g:tryton_data_cache = pyeval('json.loads(vim.eval("model_raw_data"))')
 endfunction  " }}}
@@ -56,7 +56,7 @@ function! s:get_candidate_word(path) " {{{
 endfunction  " }}}
 
 function! unite#sources#tryton_details#format_default(path, data)  " {{{
-    return a:path[-1]
+    return tryton#tools#pad_string(a:path[-1], 40) . " >>>>>>>>>>>>>"
 endfunction  " }}}
 
 function! unite#sources#tryton_details#format_model(path, data)  " {{{
@@ -105,7 +105,8 @@ function! unite#sources#tryton_details#action_mro(path, data)  " {{{
     call tryton#tools#GetTrytondPath()
     let [candidate_kind, candidate_data] =
         \ unite#sources#tryton_details#action_default(a:path, a:data)
-    let candidate_kind = ['file_base', 'jump_list'] + candidate_kind
+    let candidate_kind = ['directory', 'file_base', 'jump_list'] +
+        \ candidate_kind
     let candidate_data['action__path'] = expand(g:tryton_trytond_path) . "/" .
         \ substitute(a:data['path'], "\\.", "/", "g") . ".py"
     if a:data['override'] || a:data['initial']

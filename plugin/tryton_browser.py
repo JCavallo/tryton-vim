@@ -13,7 +13,10 @@ def set_client(parameters):
 def extract(parameters):
     from proteus import Model
     ModelDebug = Model.get('ir.model.debug.model_info')
-    values = ModelDebug.raw_field_infos({})
+    if parameters.what == 'model':
+        values = ModelDebug.raw_field_infos({})
+    elif parameters.what == 'modules':
+        values = ModelDebug.raw_module_infos({})
     print json.dumps(values)
 
 
@@ -26,7 +29,7 @@ subparsers = parser.add_subparsers(title='Main Commands',
 # Extract Things Parser
 parser_extract = subparsers.add_parser('extract', help='Extract things')
 parser_extract.add_argument('what', help='What to extract',
-    choices=['all'])
+    choices=['model', 'modules'])
 
 arguments = parser.parse_args()
 
