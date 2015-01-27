@@ -30,17 +30,26 @@ let g:tryton_grep_command = 'Unite grep:.:-inR:'
 let g:tryton_grep_options = " -auto-preview -no-split -no-empty"
 let g:tryton_parser_path = expand('<sfile>:p:h') . '/tryton_browser.py'
 
-let g:tryton_path_config = {
-    \ "word__extract": "format_model",
-    \ "fields": {
-        \ "word__extract": "format_field",
-        \ "action__extract": "action_field",
-        \ },
-    \ "mro": {
-        \ "word__extract": "format_mro",
-        \ "action__extract": "action_mro",
-        \ },
-    \ }
+let g:tryton_path_config = [
+    \ [[".*"], {
+            \ "word__extract": "format_model",
+            \ }],
+    \ [[".*", "fields", '.*'], {
+            \ "word__extract": "format_field",
+            \ "action__extract": "action_field",
+            \ }],
+    \ [[".*", "methods", '.*'], {
+            \ "word__extract": "format_method",
+            \ }],
+    \ [[".*", "methods", '.*', "mro", '.*'], {
+            \ "word__extract": "format_method_mro",
+            \ "action__extract": "action_method_mro",
+            \ }],
+    \ [[".*", "mro", '.*'], {
+            \ "word__extract": "format_mro",
+            \ "action__extract": "action_mro",
+            \ }],
+    \ ]
 
 if !exists("g:tryton_default_mappings") || g:tryton_default_mappings
     " TODO : investigate why
@@ -72,6 +81,8 @@ if !exists("g:tryton_default_mappings") || g:tryton_default_mappings
         \ :execute "normal \<Plug>(tryton-searchall-one2many)"<CR>
     nnoremap <silent><leader>bcm
         \ :execute "normal \<Plug>(tryton-browse-current-model)"<CR>
+    nnoremap <silent><leader>bcf
+        \ :execute "normal \<Plug>(tryton-browse-current-function-mro)"<CR>
 endif
 
 nnoremap <silent><Plug>(tryton-validate-xmlform)
@@ -100,7 +111,13 @@ noremap <silent><Plug>(tryton-searchall-one2many)
     \ :<C-U>call tryton#search#SearchOne2Many(1)<CR>
 nnoremap <silent><Plug>(tryton-browse-current-model)
     \ :<C-U>call unite#start_script([['tryton_details',
-        \ tryton#tools#get_current_model()]])<CR>
+        \ tryton#tools#get_current_model()]],
+    \ {'start_insert': 0})<CR>
+nnoremap <silent><Plug>(tryton-browse-current-function-mro)
+    \ :<C-U>call unite#start_script([['tryton_details',
+        \ tryton#tools#get_current_model() . '/' . 'methods' . '/' .
+        \ tryton#tools#get_current_method() . '/' . 'mro']],
+    \ {'start_insert': 0})<CR>
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

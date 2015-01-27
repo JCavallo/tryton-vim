@@ -56,7 +56,7 @@ function! s:get_candidate_word(path) " {{{
 endfunction  " }}}
 
 function! unite#sources#tryton_details#format_default(path, data)  " {{{
-    return tryton#tools#pad_string(a:path[-1], 40) . " >>>>>>>>>>>>>"
+    return tryton#tools#pad_string(a:path[-1], 40) . "----->    "
 endfunction  " }}}
 
 function! unite#sources#tryton_details#format_model(path, data)  " {{{
@@ -85,6 +85,24 @@ function! unite#sources#tryton_details#format_mro(path, data)  " {{{
     else
         let word = word . "    "
     endif
+    let word = word . a:data['base_name']
+    return word
+endfunction  " }}}
+
+function! unite#sources#tryton_details#format_method(path, data)  " {{{
+    let word = tryton#tools#pad_string(a:path[-1], 60) . ' '
+    let field_word = ''
+    if a:data['field'] != ''
+        let field_word = '(' . a:data['field'] . ')'
+    endif
+    let word = word . field_word
+    return word
+endfunction  " }}}
+
+function! unite#sources#tryton_details#format_method_mro(path, data)  " {{{
+    let word = tryton#tools#pad_string(a:path[-1], 4) . ' ' .
+        \ tryton#tools#pad_string(a:data['path'], 40) . ' '
+    let word = word . tryton#tools#pad_string(a:data['module'], 30) . ' '
     let word = word . a:data['base_name']
     return word
 endfunction  " }}}
@@ -130,6 +148,14 @@ function! unite#sources#tryton_details#action_field(path, data)  " {{{
         let candidate_kind = ['tryton_model_field'] + candidate_kind
         let candidate_data['tryton__field'] = a:data['target_field']
     endif
+    return [candidate_kind, candidate_data]
+endfunction  " }}}
+
+function! unite#sources#tryton_details#action_method_mro(path, data)  " {{{
+    let [candidate_kind, candidate_data] =
+        \ unite#sources#tryton_details#action_mro(a:path, a:data)
+    let candidate_data['action__pattern'] = "^ *__name__ = '" .  a:path[0] .
+        \ "'\\n\\(.*\\n\\)*" . " *\\zsdef " . a:path[-3] . "\\ze("
     return [candidate_kind, candidate_data]
 endfunction  " }}}
 

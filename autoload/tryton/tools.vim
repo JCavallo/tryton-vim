@@ -64,24 +64,40 @@ function! tryton#tools#get_data_from_path(path)  " {{{
 endfunction  " }}}
 
 function! tryton#tools#get_conf_from_path(path)  " {{{
-    if len(a:path) < 2
-        " Model
-        let config = g:tryton_path_config
-    elseif has_key(g:tryton_path_config, a:path[-2])
-        let config = g:tryton_path_config[a:path[-2]]
-    else
-        let config = {}
-    endif
-    return config
+    for [key, values] in g:tryton_path_config
+        if len(a:path) != len(key)
+            continue
+        endif
+        let good = 1
+        for elem in range(len(key))
+            if a:path[elem] !~ key[elem]
+                let good = 0
+                break
+            endif
+        endfor
+        if good == 1
+            return values
+        endif
+    endfor
+    return {}
 endfunction  " }}}
 
 function! tryton#tools#get_current_model()  " {{{
     let lnbr = search("^\\s*__name__ = \'.*\'", 'bn')
-    if lnbr == 0
+    if lnbr == -1
         return ""
     endif
-    let line = getbufline('.', lnbr)[0]
+    let line = getbufline('', lnbr)[0]
     return matchstr(line, " *__name__ = [\"']\\zs.*\\ze[\"']")
+endfunction  " }}}
+
+function! tryton#tools#get_current_method()  " {{{
+    let lnbr = search("^\\s*def \\zs[a-zA-Z0-9_-]*\\ze(", 'bn')
+    if lnbr == -1
+        return ""
+    endif
+    let line = getbufline('', lnbr)[0]
+    return matchstr(line, "^\\s*def \\zs[a-zA-Z0-9_-]*\\ze(")
 endfunction  " }}}
 
 function! tryton#tools#convert_path(path)  " {{{
