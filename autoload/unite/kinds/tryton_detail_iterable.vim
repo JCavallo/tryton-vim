@@ -42,9 +42,10 @@ let s:kind.action_table.go_down = {
     \ }
 
 function! s:kind.action_table.go_down.func(candidates)  " {{{
-    call unite#start_script([['tryton_details',
-                \ a:candidates[0].tryton__path]], {
-            \ 'start_insert': 0},
+    call unite#start#temporary([['tryton_details',
+                \ a:candidates[0].tryton__path]],
+        \ {'start_insert': 0},
+        \ join(a:candidates[0].tryton__path, '/'),
         \ )
 endfunction  " }}}
 
