@@ -107,6 +107,18 @@ function! unite#sources#tryton_details#format_method_mro(path, data)  " {{{
     return word
 endfunction  " }}}
 
+function! unite#sources#tryton_details#format_view(path, data)  " {{{
+    let word = tryton#tools#pad_string(a:path[-1], 4) . ' ' .
+        \ tryton#tools#pad_string(a:data['type'], 6) . ' '
+    if has_key(a:data, 'inherit') && len(a:data['inherit']) > 0
+        let word = word . ' [I] '
+    else
+        let word = word . '     '
+    endif
+    let word = word . a:data['module'] . '.' . a:data['functional_id']
+    return word
+endfunction  " }}}
+
 function! s:get_candidate_actions(path) " {{{
     let path_config = tryton#tools#get_conf_from_path(a:path)
     let data = tryton#tools#get_data_from_path(a:path)
@@ -156,6 +168,19 @@ function! unite#sources#tryton_details#action_method_mro(path, data)  " {{{
         \ unite#sources#tryton_details#action_mro(a:path, a:data)
     let candidate_data['action__pattern'] = "^ *__name__ = '" .  a:path[0] .
         \ "'\\n\\(.*\\n\\)*" . " *\\zsdef " . a:path[-3] . "\\ze("
+    return [candidate_kind, candidate_data]
+endfunction  " }}}
+
+function! unite#sources#tryton_details#action_view(path, data)  " {{{
+    let [candidate_kind, candidate_data] =
+        \ unite#sources#tryton_details#action_default(a:path, a:data)
+    if a:data['name'] != ''
+        let candidate_kind = ['directory', 'file_base', 'jump_list'] +
+            \ candidate_kind
+        let candidate_data['action__path'] = expand(g:tryton_trytond_path) .
+            \ '/trytond/modules/' . a:data['module'] . '/view/' .
+            \ a:data['name'] . '.xml'
+    endif
     return [candidate_kind, candidate_data]
 endfunction  " }}}
 

@@ -38,6 +38,14 @@ let g:tryton_path_config = [
             \ "word__extract": "format_field",
             \ "action__extract": "action_field",
             \ }],
+    \ [[".*", "views", '.*'], {
+            \ "word__extract": "format_view",
+            \ "action__extract": "action_view",
+            \ }],
+    \ [[".*", "views", '.*', 'inherit', '.*'], {
+            \ "word__extract": "format_view",
+            \ "action__extract": "action_view",
+            \ }],
     \ [[".*", "methods", '.*'], {
             \ "word__extract": "format_method",
             \ }],
