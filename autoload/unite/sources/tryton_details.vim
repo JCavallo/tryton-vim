@@ -167,7 +167,7 @@ function! unite#sources#tryton_details#action_method_mro(path, data)  " {{{
     let [candidate_kind, candidate_data] =
         \ unite#sources#tryton_details#action_mro(a:path, a:data)
     let candidate_data['action__pattern'] = "^ *__name__ = '" .  a:path[0] .
-        \ "'\\n\\(.*\\n\\)*" . " *\\zsdef " . a:path[-3] . "\\ze("
+        \ "'\\n\\(.*\\n\\)\\{-}" . " *\\zsdef " . a:path[-3] . "\\ze("
     return [candidate_kind, candidate_data]
 endfunction  " }}}
 
