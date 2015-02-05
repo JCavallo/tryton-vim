@@ -36,7 +36,7 @@ let g:tryton_path_config = [
             \ }],
     \ [[".*", "fields", '.*'], {
             \ "word__extract": "format_field",
-            \ "action__extract": "action_field",
+            \ "action__extract": "action_fields",
             \ }],
     \ [[".*", "views", '.*'], {
             \ "word__extract": "format_view",

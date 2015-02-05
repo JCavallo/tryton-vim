@@ -56,7 +56,14 @@ function! s:get_candidate_word(path) " {{{
 endfunction  " }}}
 
 function! unite#sources#tryton_details#format_default(path, data)  " {{{
-    return tryton#tools#pad_string(a:path[-1], 40) . "----->    "
+    if type(a:data) == 1
+        let val = a:data
+    elseif type(a:data) == 4
+        let val = "----->    "
+    else
+        let val = string(a:data)
+    endif
+    return tryton#tools#pad_string(a:path[-1], 40) . val
 endfunction  " }}}
 
 function! unite#sources#tryton_details#format_model(path, data)  " {{{
@@ -128,7 +135,11 @@ function! s:get_candidate_actions(path) " {{{
 endfunction  " }}}
 
 function! unite#sources#tryton_details#action_default(path, data)  " {{{
-    return [['tryton_detail_iterable'], {'tryton__path': a:path}]
+    if type(a:data) == 4
+        return [['tryton_detail_iterable'], {'tryton__path': a:path}]
+    else
+        return [['common'], {}]
+    endif
 endfunction  " }}}
 
 function! unite#sources#tryton_details#action_mro(path, data)  " {{{
@@ -149,17 +160,12 @@ function! unite#sources#tryton_details#action_mro(path, data)  " {{{
     return [candidate_kind, candidate_data]
 endfunction  " }}}
 
-function! unite#sources#tryton_details#action_field(path, data)  " {{{
+function! unite#sources#tryton_details#action_fields(path, data)  " {{{
     let [candidate_kind, candidate_data] =
         \ unite#sources#tryton_details#action_default(a:path, a:data)
-    if get(a:data, 'target_model', "") != ""
-        let candidate_kind = ['tryton_model'] + candidate_kind
-        let candidate_data['tryton__model'] = a:data['target_model']
-    endif
-    if get(a:data, 'target_field', "") != ""
-        let candidate_kind = ['tryton_model_field'] + candidate_kind
-        let candidate_data['tryton__field'] = a:data['target_field']
-    endif
+    let candidate_kind = ['tryton_model_field'] + candidate_kind
+    let candidate_data['tryton__model'] = a:path[0]
+    let candidate_data['tryton__field'] = a:path[2]
     return [candidate_kind, candidate_data]
 endfunction  " }}}
 
@@ -206,18 +212,10 @@ function! s:source.gather_candidates(args, context) "{{{
     endif
     let candidates = []
     for key in sort(keys(values))
-        let key_name = tryton#tools#pad_string(key, 40)
         let value = values[key]
-        if type(value) == 4
-            let path = copy(tr_path) + [key]
-            call add(candidates,
-                \ unite#sources#tryton_details#new_candidate(path))
-        else
-            call add(candidates, {
-                    \ 'word': key_name . ' ' . value,
-                    \ 'kind': 'common',
-                    \ })
-        endif
+        let path = copy(tr_path) + [key]
+        call add(candidates,
+            \ unite#sources#tryton_details#new_candidate(path))
         unlet value
     endfor
     return candidates

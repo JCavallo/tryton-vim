@@ -58,7 +58,12 @@ endfunction  " }}}
 function! tryton#tools#get_data_from_path(path)  " {{{
     let data = g:tryton_data_cache
     for path_value in a:path
-        let data = data[path_value]
+        if type(data[path_value]) == 4
+            let data = data[path_value]
+        else
+            " Stop as soon as a value is not a dict
+            return data[path_value]
+        endif
     endfor
     return data
 endfunction  " }}}
