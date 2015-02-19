@@ -29,6 +29,7 @@ let g:tryton_xml_indent = "   "
 let g:tryton_grep_command = 'Unite grep:.:-inR:'
 let g:tryton_grep_options = " -auto-preview -no-split -no-empty"
 let g:tryton_parser_path = expand('<sfile>:p:h') . '/tryton_browser.py'
+let g:tryton_cache_dir = expand('~/.cache/unite/tryton')
 
 let g:tryton_path_config = [
     \ [[".*"], {
@@ -91,6 +92,8 @@ if !exists("g:tryton_default_mappings") || g:tryton_default_mappings
         \ :execute "normal \<Plug>(tryton-browse-current-model)"<CR>
     nnoremap <silent><leader>bcf
         \ :execute "normal \<Plug>(tryton-browse-current-function-mro)"<CR>
+    nnoremap <silent><leader>bm
+        \ :execute "normal \<Plug>(tryton-browse-current-module)"<CR>
 endif
 
 nnoremap <silent><Plug>(tryton-validate-xmlform)
@@ -126,6 +129,10 @@ nnoremap <silent><Plug>(tryton-browse-current-function-mro)
         \ tryton#tools#get_current_model() . '/' . 'methods' . '/' .
         \ tryton#tools#get_current_method() . '/' . 'mro']],
     \ {'start_insert': 0})<CR>
+nnoremap <silent><Plug>(tryton-browse-current-module)
+    \ :<C-U>call unite#start_script([['tryton_modules']],
+    \ {'start_insert': 0,
+        \ 'input': '^' . tryton#tools#get_current_module() . '\ '})<CR>
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

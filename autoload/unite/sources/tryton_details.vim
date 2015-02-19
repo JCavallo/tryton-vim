@@ -42,9 +42,8 @@ function! unite#sources#tryton_details#load_data(context)  " {{{
     if exists('g:tryton_data_cache')
         unlet g:tryton_data_cache
     endif
-    let model_raw_data = tryton#tools#run_cmd('extract model')
-    python import json
-    let g:tryton_data_cache = pyeval('json.loads(vim.eval("model_raw_data"))')
+    let g:tryton_data_cache = tryton#tools#extract_from_cmd('extract model',
+        \ 'extract_model', a:context.is_redraw)
 endfunction  " }}}
 
 function! s:get_candidate_word(path) " {{{

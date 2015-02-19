@@ -51,6 +51,44 @@ function! tryton#tools#pad_string(str_to_pad, max_len, ...)  " {{{
     endif
 endfunction  " }}}
 
+function! tryton#tools#extract_from_cmd(cmd, cmd_cache, redraw)  " {{{
+    for var_def in [['tryton_server_host_name', 'Tryton Server Hostname'],
+            \ ['tryton_server_port', 'Tryton Server Port'],
+            \ ['tryton_server_database', 'Tryton Server Database']]
+        if !exists('g:' . var_def[0]) || eval('g:' . var_def[0]) ==# ""
+            execute 'let g:' . var_def[0] . " = unite#util#input('" .
+                \ var_def[1] . " (set g:" . var_def[0] . " to avoid this) : ')"
+        endif
+    endfor
+    if !a:redraw && a:cmd_cache != '' && exists('g:tryton_cache_dir') &&
+            \ exists('g:tryton_server_host_name') &&
+            \ exists('g:tryton_server_port') &&
+            \ exists('g:tryton_server_database')
+        let cache_filename = expand(g:tryton_cache_dir) . '/' .
+            \ g:tryton_server_host_name . '-' . g:tryton_server_port . '-' .
+            \ g:tryton_server_database . '.' . a:cmd_cache . '.vcache'
+        if filereadable(cache_filename)
+            let raw_data = readfile(cache_filename)[0]
+            let cached = 1
+        endif
+    endif
+    if !exists('raw_data')
+        let raw_data = tryton#tools#run_cmd(a:cmd)
+    endif
+    python import json
+    let return_dict = pyeval('json.loads(vim.eval("raw_data"))')
+    if exists('return_dict') && a:cmd_cache != '' &&
+            \ exists('g:tryton_cache_dir') && !exists('cached')
+        let cache_filename = expand(g:tryton_cache_dir) . '/' .
+            \ g:tryton_server_host_name . '-' .  g:tryton_server_port . '-' .
+            \ g:tryton_server_database . '.' . a:cmd_cache . '.vcache'
+        if isdirectory(expand(g:tryton_cache_dir))
+            call writefile([raw_data], cache_filename)
+        endif
+    endif
+    return return_dict
+endfunction  " }}}
+
 function! tryton#tools#run_cmd(cmd)  " {{{
     return system(tryton#tools#browser_cmd() . a:cmd)
 endfunction  " }}}
@@ -85,6 +123,19 @@ function! tryton#tools#get_conf_from_path(path)  " {{{
         endif
     endfor
     return {}
+endfunction  " }}}
+
+function! tryton#tools#edit_file(path)  " {{{
+    execute ':edit ' . expand(a:path)
+endfunction  " }}}
+
+function! tryton#tools#get_current_module()  " {{{
+    let path = split(expand('%'), '/')
+    for idx in range(len(path) - 2)
+        if filereadable(join(path[:-idx-1], '/') . '/tryton.cfg')
+            return path[-idx-1]
+        endif
+    endfor
 endfunction  " }}}
 
 function! tryton#tools#get_current_model()  " {{{

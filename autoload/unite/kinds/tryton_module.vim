@@ -1,5 +1,5 @@
 " #############################################################################
-" File: tryton_modules.vim
+" File: tryton_module.vim
 " Author: Jean Cavallo <jean.cavallo@hotmail.fr>
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
@@ -25,45 +25,43 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! unite#sources#tryton_modules#define() "{{{
-    return s:source
-endfunction"}}}
-
-let s:source = {
-    \ 'name' : 'tryton_modules',
-    \ 'description' : 'Browse tryton modules',
-    \ 'start_insert': 0,
-    \ }
-
-function! unite#sources#tryton_modules#load_data(context)  " {{{
-    if exists('g:tryton_modules_cache') && !a:context.is_redraw
-        return
-    endif
-    if exists('g:tryton_modules_cache')
-        unlet g:tryton_modules_cache
-    endif
-    let g:tryton_modules_cache = tryton#tools#extract_from_cmd(
-        \ 'extract modules', 'extract_modules', a:context.is_redraw)
+function! unite#kinds#tryton_module#define()  " {{{
+    return s:kind
 endfunction  " }}}
 
-function! s:source.gather_candidates(args, context) "{{{
-    call tryton#tools#GetTrytondPath()
-    call unite#sources#tryton_modules#load_data(a:context)
-    let values = g:tryton_modules_cache
-    let candidates = []
-    for key in sort(keys(values))
-        let word = tryton#tools#pad_string(key, 40) . ' ' .
-            \ tryton#tools#pad_string('[' . values[key]['state'] . ']' , 20) .
-            \ ' children: ' . join(values[key]['childs'], ', ')
-        let path = expand(g:tryton_trytond_path) . '/trytond/modules/' .
-            \ key
-        call add(candidates, {
-                \ 'word': word,
-                \ 'kind': 'tryton_module',
-                \ 'action__path': path,
-                \ })
-    endfor
-    return candidates
+let s:kind = {
+    \ 'name': 'tryton_module',
+    \ 'default_action': 'rec',
+    \ 'action_table': {},
+    \ 'parents': ['directory'],
+    \ }
+
+let s:kind.action_table.edit_init_file = {
+    \ 'is_selectable': 1,
+    \ 'is_quit': 1,
+    \ }
+
+function! s:kind.action_table.edit_init_file.func(candidates)  " {{{
+    call tryton#tools#edit_file(a:candidates[0].action__path . '/__init__.py')
+endfunction  " }}}
+
+let s:kind.action_table.edit_tryton_cfg = {
+    \ 'is_selectable': 1,
+    \ 'is_quit': 1,
+    \ }
+
+function! s:kind.action_table.edit_tryton_cfg.func(candidates)  " {{{
+    call tryton#tools#edit_file(a:candidates[0].action__path . '/tryton.cfg')
+endfunction  " }}}
+
+let s:kind.action_table.edit_test_module = {
+    \ 'is_selectable': 1,
+    \ 'is_quit': 1,
+    \ }
+
+function! s:kind.action_table.edit_test_module.func(candidates)  " {{{
+    call tryton#tools#edit_file(a:candidates[0].action__path .
+        \ '/tests/test_module.py')
 endfunction  " }}}
 
 let &cpo = s:save_cpo
