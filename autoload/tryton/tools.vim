@@ -60,6 +60,9 @@ function! tryton#tools#extract_from_cmd(cmd, cmd_cache, redraw)  " {{{
                 \ var_def[1] . " (set g:" . var_def[0] . " to avoid this) : ')"
         endif
     endfor
+    if exists('g:tryton_cache_dir') && !isdirectory(expand(g:tryton_cache_dir))
+        call mkdir(expand(g:tryton_cache_dir), 'p')
+    endif
     if !a:redraw && a:cmd_cache != '' && exists('g:tryton_cache_dir') &&
             \ exists('g:tryton_server_host_name') &&
             \ exists('g:tryton_server_port') &&
