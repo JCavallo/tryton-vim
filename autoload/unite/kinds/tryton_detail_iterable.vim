@@ -1,5 +1,5 @@
 " #############################################################################
-" File: tryton_detail_iterable.vim
+" File: autoload/unite/kinds/tryton_detail_iterable.vim
 " Author: Jean Cavallo <jean.cavallo@hotmail.fr>
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining

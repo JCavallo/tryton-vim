@@ -1,5 +1,5 @@
 " #############################################################################
-" File: tryton_field.vim
+" File: autoload/unite/sources/tryton_field.vim
 " Author: Jean Cavallo <jean.cavallo@hotmail.fr>
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining

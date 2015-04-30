@@ -1,5 +1,5 @@
 " #############################################################################
-" File: trpy.vim
+" File: syntax/trpy.vim
 " Author: Jean Cavallo <jean.cavallo@hotmail.fr>
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining

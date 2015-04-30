@@ -1,5 +1,5 @@
 " #############################################################################
-" File: trpy.vim
+" File: indent/trpy.vim
 " Maintainer: Jean Cavallo <jean.cavallo@hotmail.fr>
 " Authors: Bram Moolenaar <Bram@vim.org>, Cédric Krier <ced@b2ck.com>
 " Original Author: David Bustos <bustos@caltech.edu>
