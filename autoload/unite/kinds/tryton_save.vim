@@ -48,15 +48,13 @@ function! s:kind.action_table.open.func(candidates)  " {{{
         let g:tryton_server_database = a:candidates[0].database
         let force_redraw = 0
     else
-        if exists('g:tryton_server_host_name')
-            unlet g:tryton_server_host_name
-        endif
-        if exists('g:tryton_server_port')
-            unlet g:tryton_server_port
-        endif
-        if exists('g:tryton_server_database')
-            unlet g:tryton_server_database
-        endif
+        for var_def in ['tryton_server_host_name', 'tryton_server_port',
+                \ 'tryton_server_database', 'tryton_server_login',
+                \ 'tryton_server_password']
+            if exists('g:' . var_def)
+                execute 'unlet g:' . var_def
+            endif
+        endfor
         let force_redraw = 1
     endif
     call unite#start_script([['tryton_details']],
