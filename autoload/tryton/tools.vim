@@ -133,12 +133,14 @@ function! tryton#tools#edit_file(path)  " {{{
 endfunction  " }}}
 
 function! tryton#tools#get_current_module()  " {{{
-    let path = split(expand('%'), '/')
+    let path = split(expand('%:p:h'), '/')
     for idx in range(len(path) - 2)
-        if filereadable(join(path[:-idx-1], '/') . '/tryton.cfg')
+        if filereadable('/' . join(path[:-idx-1], '/') . '/tryton.cfg')
             return path[-idx-1]
         endif
     endfor
+    echoerr 'No module found'
+    return ''
 endfunction  " }}}
 
 function! tryton#tools#get_current_model()  " {{{
