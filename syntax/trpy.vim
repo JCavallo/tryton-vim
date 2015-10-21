@@ -65,6 +65,8 @@ syn keyword pythonStatement     False None True
 syn keyword pythonStatement     as assert break continue del exec global
 syn keyword pythonStatement     lambda nonlocal pass print return with yield
 
+syn match   OperatorChars       "?\|+\|-\|\*\|;\|:\|,\|<\|>\|&\||\|!\|\~\|%\|=\|\.\|/\(/\|*\)\@!"
+
 " Add self / cls to pythonBuiltin
 syn keyword trytonBuiltin       self cls
 
@@ -108,6 +110,7 @@ if version >= 508 || !exists("did_python_syn_inits")
     HiLink trytonSpecFunction       Directory
     HiLink trytonStandardFunction   Function
     HiLink trytonBuiltin            PreCondit
+    HiLink OperatorChars            Identifier
     delcommand HiLink
 endif
 
