@@ -44,8 +44,8 @@ INTRODUCTION                                        *tryton-introduction*
       guidelines
     - Syntax and Folding files for python files
     - Xml validation / formatting (requires xmllint available)
-    - Code Snippets (requires *UltiSnips* )
-    - Code Search Patterns (requires *unite* )
+    - Code Snippets (requires UltiSnips )
+    - Code Search Patterns (requires unite.vim )
 
 ==============================================================================
 INSTALL                                             *tryton-install*
@@ -70,7 +70,7 @@ tryton#tools#ValidateXml(view_type)                 *tryton-validate-xml*
 
     Performs rng validation for the given view_type, which must be one of
     "form", "tree" or "graph". This requires the
-    *g:tryton_trytond_default_path* to be properly set to behave correctly.
+    g:tryton_trytond_default_path to be properly set to behave correctly.
 
     Command line output indicates the detected errors.
 
@@ -126,7 +126,7 @@ python available in vim (it uses the shipped in tryton_browser script) and
 proteus available.
 
 The sources use a cache to avoid too many requests to the server, so the first
-call on a new vim instance (or force refresh using unite-redraw ) may be
+call on a new vim instance (or force refresh using *unite-redraw* ) may be
 slow.
 
 The server must be available using the xml_rpc protocol enabled, and some
@@ -257,15 +257,15 @@ are not good for you :
 
 <Plug>(tryton-validate-xmlform)             *<Plug>(tryton-validate-xmlform)*
 
-    Performs rng validation of form views. See *tryton-validate-xml*
+    Performs rng validation of form views. See tryton-validate-xml
 
 <Plug>(tryton-validate-xmltree)             *<Plug>(tryton-validate-xmltree)*
 
-    Performs rng validation of tree views. See *tryton-validate-xml*
+    Performs rng validation of tree views. See tryton-validate-xml
 
 <Plug>(tryton-validate-xmlgraph)            *<Plug>(tryton-validate-xmlgraph)*
 
-    Performs rng validation of graph views. See *tryton-validate-xml*
+    Performs rng validation of graph views. See tryton-validate-xml
 
 <Plug>(tryton-xml-format)                   *<Plug>(tryton-xml-format)*
 
@@ -325,9 +325,9 @@ are not good for you :
 
 <Plug>(tryton-browse-current-model)     *<Plug>(tryton-browse-current-model)*
 
-    Start the tryton-details source on the current model
+    Start the *tryton-details* source on the current model
 
-Mappings that are set if *g:tryton_default_mappings* is set are :
+Mappings that are set if g:tryton_default_mappings is set are :
 
 >
     <Leader>xf          <Plug>(tryton-validate-xmlform)
