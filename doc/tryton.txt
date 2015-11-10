@@ -126,11 +126,11 @@ python available in vim (it uses the shipped in tryton_browser script) and
 proteus available.
 
 The sources use a cache to avoid too many requests to the server, so the first
-call on a new vim instance (or force refresh using *unite-redraw* ) may be
+call on a new vim instance (or force refresh using unite-redraw ) may be
 slow.
 
 The server must be available using the xml_rpc protocol enabled, and some
-configuration is required on the vim side (see *tryton-variables* ). Any non
+configuration is required on the vim side (see tryton-variables ). Any non
 configured information (typically the server password) will be asked and
 stored once at runtime.
 
@@ -275,57 +275,57 @@ are not good for you :
 
     Search the current directory for the given Class name.
 
-    See *tryton-search-class*
+    See tryton-search-class
 
 <Plug>(tryton-search-model)                 *<Plug>(tryton-search-model)*
 
     Search the current directory for the given model name definitions.
 
-    See *tryton-search-model*
+    See tryton-search-model
 
 <Plug>(tryton-search-field)                 *<Plug>(tryton-search-field)*
 
     Search the current directory for a field description matching the given
     field name.
 
-    See *tryton-search-field*
+    See tryton-search-field
 
 <Plug>(tryton-search-function)              *<Plug>(tryton-search-function)*
 
     Search the current directory for a function definition matching the
     provided function name.
 
-    See *tryton-search-function*
+    See tryton-search-function
 
 <Plug>(tryton-search-many2one)              *<Plug>(tryton-search-many2one)*
 
     Search the current directory for Many2One fields pointing to the given
     model name.
 
-    See *tryton-search-many2one*
+    See tryton-search-many2one
 
 <Plug>(tryton-search-one2many)              *<Plug>(tryton-search-one2many)*
 
     Search the current directory for One2Many field using the given model
     name.
 
-    See *tryton-search-one2many*
+    See tryton-search-one2many
 
 <Plug>(tryton-searchall-many2one)           *<Plug>(tryton-searchall-many2one)*
 
-    Same as *<Plug>(tryton-search-many2one)* but includes function fields.
+    Same as <Plug>(tryton-search-many2one) but includes function fields.
 
-    See *tryton-search-many2one*
+    See tryton-search-many2one
 
 <Plug>(tryton-searchall-one2many)           *<Plug>(tryton-searchall-one2many)*
 
-    Same as *<Plug>(tryton-search-one2many)* but includes function fields.
+    Same as <Plug>(tryton-search-one2many) but includes function fields.
 
-    See *tryton-search-one2many*
+    See tryton-search-one2many
 
 <Plug>(tryton-browse-current-model)     *<Plug>(tryton-browse-current-model)*
 
-    Start the *tryton-details* source on the current model
+    Start the tryton-details source on the current model
 
 Mappings that are set if *g:tryton_default_mappings* is set are :
 
