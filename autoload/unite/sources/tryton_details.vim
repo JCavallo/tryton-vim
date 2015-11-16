@@ -36,14 +36,15 @@ let s:source = {
     \ }
 
 function! unite#sources#tryton_details#load_data(context)  " {{{
-    if exists('g:tryton_data_cache') && !a:context.is_redraw
+    let must_redraw = has_key(a:context, 'force_tryton_redraw')
+    if exists('g:tryton_data_cache') && !must_redraw
         return
     endif
     if exists('g:tryton_data_cache')
         unlet g:tryton_data_cache
     endif
     let g:tryton_data_cache = tryton#tools#extract_from_cmd('extract model',
-        \ 'extract_model', a:context.is_redraw)
+        \ 'extract_model', must_redraw)
 endfunction  " }}}
 
 function! s:get_candidate_word(path) " {{{
