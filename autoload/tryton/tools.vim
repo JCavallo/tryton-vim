@@ -37,7 +37,7 @@ function! tryton#tools#browser_cmd()  " {{{
     return g:tryton_parser_path . ' http://' .
         \ g:tryton_server_login . ':' . g:tryton_server_password .
         \ '@' . g:tryton_server_host_name . ':' .
-        \ g:tryton_server_port . '/' . g:tryton_server_database . ' '
+        \ g:tryton_server_port . '/' . g:tryton_server_database . '/ '
 endfunction  " }}}
 
 function! tryton#tools#pad_string(str_to_pad, max_len, ...)  " {{{
@@ -78,8 +78,12 @@ function! tryton#tools#extract_from_cmd(cmd, cmd_cache, redraw)  " {{{
     if !exists('raw_data')
         let raw_data = tryton#tools#run_cmd(a:cmd)
     endif
-    python import json
-    let return_dict = pyeval('json.loads(vim.eval("raw_data"))')
+    if has('nvim')
+        let return_dict = json_decode(raw_data)
+    else
+        python import json
+        let return_dict = pyeval('json.loads(vim.eval("raw_data"))')
+    endif
     if exists('return_dict') && a:cmd_cache != '' &&
             \ exists('g:tryton_cache_dir') && !exists('cached')
         let cache_filename = expand(g:tryton_cache_dir) . '/' .
