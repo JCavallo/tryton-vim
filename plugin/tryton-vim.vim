@@ -31,6 +31,30 @@ let g:tryton_grep_options = " -auto-preview -no-split -no-empty"
 let g:tryton_parser_path = expand('<sfile>:p:h') . '/tryton_browser.py'
 let g:tryton_cache_dir = expand('~/.cache/unite/tryton')
 
+autocmd FileType xml let b:syntastic_xml_xmllint_args =
+    \ get(g:, 'syntastic_xml_xmllint_args', '') .
+    \ FindXmlRngConfig(expand('<afile>'))
+
+function! FindXmlRngConfig(filename) "{{{
+    if get(g:, 'tryton_trytond_path', '') ==# ''
+        return ''
+    endif
+    let rng_file = ''
+    if a:filename =~ '.*_form.xml'
+        let rng_file = 'form.rng'
+    elseif a:filename =~ '.*_list.xml' || a:filename =~ '.*_tree.xml'
+        let rng_file = 'tree.rng'
+    elseif a:filename =~ '.*_calendar.xml'
+        let rng_file = 'calendar.rng'
+    elseif a:filename =~ '.*_board.xml'
+        let rng_file = 'board.rng'
+    endif
+    if rng_file ==# ''
+        return rng_file
+    endif
+    return '--relaxng ' . g:tryton_trytond_path . '/trytond/ir/ui/' . rng_file
+endfunction " }}}
+
 let g:tryton_path_config = [
     \ [[".*"], {
             \ "word__extract": "format_model",

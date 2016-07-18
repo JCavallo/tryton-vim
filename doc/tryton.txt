@@ -43,7 +43,8 @@ INTRODUCTION                                        *tryton-introduction*
     - Specific indentation file for python files which match the project
       guidelines
     - Syntax and Folding files for python files
-    - Xml validation / formatting (requires xmllint available)
+    - Xml validation / formatting (requires xmllint available, plugged in
+      syntastic if available)
     - Code Snippets (requires UltiSnips )
     - Code Search Patterns (requires unite.vim )
 
@@ -74,7 +75,8 @@ tryton#tools#ValidateXml(view_type)                 *tryton-validate-xml*
 
     Command line output indicates the detected errors.
 
-    TODO: map errors to location list
+    If Syntastic is installed with xmllint activated, the additional error
+    will appear in the location list.
 
 tryton#tools#FormatXML()                            *tryton-format-xml*
 
