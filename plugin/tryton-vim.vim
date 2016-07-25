@@ -55,6 +55,21 @@ function! FindXmlRngConfig(filename) "{{{
     return '--relaxng ' . g:tryton_trytond_path . '/trytond/ir/ui/' . rng_file
 endfunction " }}}
 
+autocmd FileType python call AutoloadTrytonData()
+
+function! AutoloadTrytonData() " {{{
+    if exists('g:tryton_data_cache')
+        return
+    endif
+    if !exists('g:tryton_complete_autoload')
+        return
+    endif
+    if g:tryton_complete_autoload
+        let g:tryton_data_cache = tryton#tools#extract_from_cmd(
+            \ 'extract model', 'extract_model', 0)
+    endif
+endfunction " }}}
+
 let g:tryton_path_config = [
     \ [[".*"], {
             \ "word__extract": "format_model",

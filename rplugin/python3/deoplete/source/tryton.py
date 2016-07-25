@@ -40,22 +40,32 @@ class Source(Base):
         pass
 
     def get_complete_position(self, context):
-        pos = context['input'].rfind('.')
-        return pos if pos < 0 else pos + 1
+        data = context['input']
+        trimmed = data.lstrip()
+        if trimmed.startswith('cls') or trimmed.startswith('self'):
+            pos = data.rfind('.')
+            return pos if pos < 0 else pos + 1
+        return len(data) - len(trimmed)
 
     def gather_candidates(self, context):
         if self.__local_cache is None:
             cache = self.vim.funcs.exists('g:tryton_data_cache')
             if cache:
                 self.__local_cache = self.vim.eval('g:tryton_data_cache')
+                self.__models = [{
+                            'word': x, 'abbr': x,
+                            'kind': 'model'}
+                        for x in sorted(self.__local_cache.keys())]
             else:
                 return []
-        model = self.vim.call('tryton#tools#get_current_model')
-        path = context['input'].split('.')
+        path = context['input'].lstrip().split('.')
         first = path[0]
         if first == 'cls' and len(path) > 2:
-            return []
+            return self.__models
+        if first not in ('cls', 'self') and len(first) > 3:
+            return self.__models
 
+        model = self.vim.call('tryton#tools#get_current_model')
         for key in path[1:-1]:
             model_data = self.__local_cache.get(model, {})
             if not model_data:
@@ -63,23 +73,22 @@ class Source(Base):
             if key in model_data['fields']:
                 model = model_data['fields'].get('target_model', None)
                 if not model:
-                    return
+                    return []
             else:
-                return
+                return []
 
         model_data = self.__local_cache.get(model, {})
         if not model_data:
             return []
         res = []
-        for fname, fdata in model_data.get('fields', {}).items():
+        for fname in sorted(model_data.get('fields', {}).keys()):
             res.append({
                     'word': fname, 'abbr': fname,
-                    'kind': 'field (%s)' % fdata['kind'],
+                    'kind': 'field (%s)' % model_data['fields'][fname]['kind'],
                     })
-        for mname, mdata in model_data.get('methods', {}).items():
+        for mname in sorted(model_data.get('methods', {}).keys()):
             res.append({
                     'word': mname, 'abbr': mname,
                     'kind': 'method',
                     })
-        res.sort(key=lambda x: x['word'])
         return res
