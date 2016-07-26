@@ -60,18 +60,22 @@ class Source(Base):
                 return []
         path = context['input'].lstrip().split('.')
         first = path[0]
+
         if first == 'cls' and len(path) > 2:
             return self.__models
         if first not in ('cls', 'self') and len(first) > 3:
             return self.__models
 
-        model = self.vim.call('tryton#tools#get_current_model')
+        try:
+            model = self.vim.call('tryton#tools#get_current_model')
+        except:
+            return []
         for key in path[1:-1]:
             model_data = self.__local_cache.get(model, {})
             if not model_data:
                 return []
             if key in model_data['fields']:
-                model = model_data['fields'].get('target_model', None)
+                model = model_data['fields'][key].get('target_model', None)
                 if not model:
                     return []
             else:
@@ -82,13 +86,27 @@ class Source(Base):
             return []
         res = []
         for fname in sorted(model_data.get('fields', {}).keys()):
-            res.append({
-                    'word': fname, 'abbr': fname,
-                    'kind': 'field (%s)' % model_data['fields'][fname]['kind'],
-                    })
+            res.append(self.get_field_candidate(fname,
+                    model_data['fields'][fname]))
         for mname in sorted(model_data.get('methods', {}).keys()):
-            res.append({
-                    'word': mname, 'abbr': mname,
-                    'kind': 'method',
-                    })
+            res.append(self.get_func_candidate(mname,
+                    model_data['methods'][mname]))
         return res
+
+    def get_field_candidate(self, fname, fdata):
+        return {
+            'word': fname, 'abbr': fname,
+            'kind': 'field %s[%s][%s]' % (
+                '[F] ' if fdata['is_function'] else '',
+                fdata['kind'], fdata['module']),
+            }
+
+    def get_func_candidate(self, mname, mdata):
+        module = None
+        for frame in sorted(mdata['mro']):
+            if mdata['mro'][frame]['initial']:
+                module = mdata['mro'][frame]['module']
+        return {
+            'word': mname, 'abbr': mname,
+            'kind': 'method' + (' [%s]' % module if module else ''),
+            }
