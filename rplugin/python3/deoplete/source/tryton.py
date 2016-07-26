@@ -22,7 +22,18 @@
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # ============================================================================
 
+import re
 from .base import Base
+
+
+def is_cls(text):
+    return bool(text.startswith('cls') or
+        re.findall(r'super\(\w+, cls\)', text))
+
+
+def is_self(text):
+    return bool(text.startswith('self') or
+        re.findall(r'super\(\w+, self\)', text))
 
 
 class Source(Base):
@@ -42,7 +53,7 @@ class Source(Base):
     def get_complete_position(self, context):
         data = context['input']
         trimmed = data.lstrip()
-        if trimmed.startswith('cls') or trimmed.startswith('self'):
+        if is_cls(trimmed) or is_self(trimmed):
             pos = data.rfind('.')
             return pos if pos < 0 else pos + 1
         return len(data) - len(trimmed)
@@ -61,9 +72,9 @@ class Source(Base):
         path = context['input'].lstrip().split('.')
         first = path[0]
 
-        if first == 'cls' and len(path) > 2:
+        if is_cls(first) and len(path) > 2:
             return self.__models
-        if first not in ('cls', 'self') and len(first) > 3:
+        if not is_cls(first) and not is_self(first) and len(first) > 3:
             return self.__models
 
         try:
@@ -97,7 +108,7 @@ class Source(Base):
         return {
             'word': fname, 'abbr': fname,
             'kind': 'field %s[%s][%s]' % (
-                ' [F]' if fdata['is_function'] else '',
+                '[F]' if fdata['is_function'] else '',
                 fdata['kind'], fdata['module']),
             }
 
