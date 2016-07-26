@@ -97,7 +97,7 @@ class Source(Base):
         return {
             'word': fname, 'abbr': fname,
             'kind': 'field %s[%s][%s]' % (
-                '[F] ' if fdata['is_function'] else '',
+                ' [F]' if fdata['is_function'] else '',
                 fdata['kind'], fdata['module']),
             }
 
