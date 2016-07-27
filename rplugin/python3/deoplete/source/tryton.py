@@ -105,11 +105,14 @@ class Source(Base):
         return res
 
     def get_field_candidate(self, fname, fdata):
+        info = '[Function] ' if fdata['is_function'] else ''
+        info += fdata['kind']
         return {
-            'word': fname, 'abbr': fname,
-            'kind': 'field %s[%s][%s]' % (
-                '[F]' if fdata['is_function'] else '',
-                fdata['kind'], fdata['module']),
+            'word': fname,
+            'kind': 'field [%s]' % fdata['module'],
+            'menu': info,
+            'info': '\n'.join([info, ''] + [str(k) + ': ' + str(v)
+                    for k, v in fdata.items()]),
             }
 
     def get_func_candidate(self, mname, mdata):
@@ -118,6 +121,8 @@ class Source(Base):
             if mdata['mro'][frame]['initial']:
                 module = mdata['mro'][frame]['module']
         return {
-            'word': mname, 'abbr': mname,
-            'kind': 'method' + (' [%s]' % module if module else ''),
+            'word': mname,
+            'kind': 'meth  ' + ('[%s]' % module if module else ''),
+            'menu': mdata['parameters'],
+            'info': mdata['parameters'],
             }
