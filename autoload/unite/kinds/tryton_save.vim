@@ -58,7 +58,7 @@ function! s:kind.action_table.open.func(candidates)  " {{{
         let force_redraw = 1
     endif
     call unite#start_script([['tryton_details']],
-        \ {'start_insert': 0, 'force_tryton_reload': force_redraw}
+        \ {'start_insert': 0, 'force_tryton_redraw': force_redraw}
         \ )
 endfunction  " }}}
 
