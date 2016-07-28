@@ -26,16 +26,6 @@ import re
 from .base import Base
 
 
-def is_cls(text):
-    return bool(text.startswith('cls') or
-        re.findall(r'super\(\w+, cls\)', text))
-
-
-def is_self(text):
-    return bool(text.startswith('self') or
-        re.findall(r'super\(\w+, self\)', text))
-
-
 class Source(Base):
 
     def __init__(self, vim):
@@ -53,7 +43,7 @@ class Source(Base):
     def get_complete_position(self, context):
         data = context['input']
         trimmed = data.lstrip()
-        if is_cls(trimmed) or is_self(trimmed):
+        if self.get_model(trimmed):
             pos = data.rfind('.')
             return pos if pos < 0 else pos + 1
         return len(data) - len(trimmed)
@@ -72,15 +62,10 @@ class Source(Base):
         path = context['input'].lstrip().split('.')
         first = path[0]
 
-        if is_cls(first) and len(path) > 2:
-            return self.__models
-        if not is_cls(first) and not is_self(first) and len(first) > 3:
+        model = self.get_model(first)
+        if model == '':
             return self.__models
 
-        try:
-            model = self.vim.call('tryton#tools#get_current_model')
-        except:
-            return []
         for key in path[1:-1]:
             model_data = self.__local_cache.get(model, {})
             if not model_data:
@@ -126,3 +111,19 @@ class Source(Base):
             'menu': mdata['parameters'],
             'info': mdata['parameters'],
             }
+
+    def get_model(self, text):
+        if bool(text.startswith('cls') or
+                re.findall(r'super\(\w+, cls\)', text) or
+                text.startswith('self') or
+                re.findall(r'super\(\w+, self\)', text)):
+            try:
+                return self.vim.call('tryton#tools#get_current_model')
+            except:
+                return ''
+        matches = self.vim.funcs.exists('g:tryton_model_match')
+        if matches:
+            matches = self.vim.eval('g:tryton_model_match')
+        if not matches:
+            return ''
+        return matches.get(text.split('.', 1)[0], '')
