@@ -174,7 +174,6 @@ down") so you can use the action menu to jump in.
 Another source that may be useful is the "tryton_field" source. It is used to
 directly access the list of all field definitions in the database. Typical
 usage would be :
-
 >
     :UniteWithCursorWord tryton_field
 
@@ -182,7 +181,7 @@ usage would be :
 ==============================================================================
 VARIABLES                                           *tryton-variables*
 
-g:tryton_trytond_default_path                   *g:tryton_trytond_default_path*
+g:tryton_trytond_default_path               *g:tryton_trytond_default_path*
 
         This variable is used to declare the location of the trytond folder.
         It is necessary for xml validation features, as we use the rng
@@ -194,7 +193,28 @@ g:tryton_trytond_default_path                   *g:tryton_trytond_default_path*
 
         default: not set
 
-g:tryton_server_host_name                           *g:tryton_server_host_name*
+g:tryton_complete_autoload                       *g:tryton_complete_autoload*
+
+        If true, the cache will be loaded when opening a python file. It
+        allows to avoid waiting when using tryton-details source or for
+        deoplete completion.
+
+        default: 0
+
+g:tryton_model_match                                *g:tryton_model_match*
+
+        A dictionary that contains classic matches to help for completion:
+>
+        let g:tryton_model_match = {
+            \ 'party': 'party.party'
+            \ }
+<
+        will trigger completion on `party.party` fields / methods if the
+        line to complete starts with `party`
+
+        default: not set
+
+g:tryton_server_host_name                       *g:tryton_server_host_name*
 
         Set the tryton server to connect to.
 
@@ -227,7 +247,7 @@ g:tryton_server_password                            *g:tryton_server_password*
 
         default: Not set
 
-g:tryton_default_mappings                           *g:tryton_default_mappings*
+g:tryton_default_mappings                       *g:tryton_default_mappings*
 
         Set to 0 to manually manage plugin mappings
 
@@ -313,13 +333,13 @@ are not good for you :
 
     See tryton-search-one2many
 
-<Plug>(tryton-searchall-many2one)           *<Plug>(tryton-searchall-many2one)*
+<Plug>(tryton-searchall-many2one)       *<Plug>(tryton-searchall-many2one)*
 
     Same as <Plug>(tryton-search-many2one) but includes function fields.
 
     See tryton-search-many2one
 
-<Plug>(tryton-searchall-one2many)           *<Plug>(tryton-searchall-one2many)*
+<Plug>(tryton-searchall-one2many)       *<Plug>(tryton-searchall-one2many)*
 
     Same as <Plug>(tryton-search-one2many) but includes function fields.
 
@@ -347,3 +367,4 @@ Mappings that are set if g:tryton_default_mappings is set are :
     <Leader>bcm         <Plug>(tryton-browse-current-model)
 
 ==============================================================================
+vim:tw=78:ts=8:ft=help:noet:norl:
