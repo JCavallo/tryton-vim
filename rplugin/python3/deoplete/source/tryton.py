@@ -82,25 +82,25 @@ class Source(Base):
             return []
         res = []
         for fname in sorted(model_data.get('fields', {}).keys()):
-            res.append(self.get_field_candidate(fname,
-                    model_data['fields'][fname]))
+            res.append(self.get_field_candidate(fname, model, model_data))
         for mname in sorted(model_data.get('methods', {}).keys()):
-            res.append(self.get_func_candidate(mname,
-                    model_data['methods'][mname]))
+            res.append(self.get_func_candidate(mname, model, model_data))
         return res
 
-    def get_field_candidate(self, fname, fdata):
-        info = '[Function] ' if fdata['is_function'] else ''
-        info += fdata['kind']
+    def get_field_candidate(self, fname, model_name, data):
+        fdata = data['fields'][fname]
+        menu = ('[Function] ' if fdata['is_function'] else '') + fdata['kind']
+        info = 'Field %s of %s - %s' % (fname, model_name, menu)
         return {
             'word': fname,
             'kind': 'field [%s]' % fdata['module'],
-            'menu': info,
+            'menu': menu,
             'info': '\n'.join([info, ''] + [str(k) + ': ' + str(v)
                     for k, v in fdata.items()]),
             }
 
-    def get_func_candidate(self, mname, mdata):
+    def get_func_candidate(self, mname, model_name, data):
+        mdata = data['methods'][mname]
         module = None
         for frame in sorted(mdata['mro']):
             if mdata['mro'][frame]['initial']:
@@ -109,7 +109,8 @@ class Source(Base):
             'word': mname,
             'kind': 'meth  ' + ('[%s]' % module if module else ''),
             'menu': mdata['parameters'],
-            'info': mdata['parameters'],
+            'info': 'Method %s of %s : %s' % (
+                mname, model_name, mdata['parameters']),
             }
 
     def get_model(self, text):
