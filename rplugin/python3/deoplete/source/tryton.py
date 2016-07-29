@@ -105,12 +105,21 @@ class Source(Base):
         for frame in sorted(mdata['mro']):
             if mdata['mro'][frame]['initial']:
                 module = mdata['mro'][frame]['module']
+        info = 'Method %s of %s : %s' % (mname, model_name,
+            mdata['parameters'])
+        modules, classes = [], []
+        for k in sorted(mdata['mro'].keys()):
+            frame = mdata['mro'][k]
+            if frame['base_name'] == model_name:
+                modules.append(frame['module'])
+            else:
+                classes.append(frame['base_name'])
         return {
             'word': mname,
             'kind': 'meth  ' + ('[%s]' % module if module else ''),
             'menu': mdata['parameters'],
-            'info': 'Method %s of %s : %s' % (
-                mname, model_name, mdata['parameters']),
+            'info': '\n'.join([info, '', 'Classes : ' + ', '.join(classes),
+                    '', 'Modules : ' + ', '.join(modules)]),
             }
 
     def get_model(self, text):
