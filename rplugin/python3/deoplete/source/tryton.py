@@ -66,6 +66,8 @@ class Source(Base):
         if self.get_model(trimmed):
             pos = data.rfind('.')
             return pos if pos < 0 else pos + 1
+        if trimmed.startswith("'"):
+            return len(data) - len(trimmed) + 1
         return len(data) - len(trimmed)
 
     def gather_candidates(self, context):
@@ -84,7 +86,9 @@ class Source(Base):
 
         model = self.get_model(first)
         if model == '':
-            return self.__models
+            if first.startswith("'"):
+                return self.__models
+            return []
 
         for key in path[1:-1]:
             model_data = self.__local_cache.get(model, {})
