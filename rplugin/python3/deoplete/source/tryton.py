@@ -25,6 +25,8 @@
 import re
 from .base import Base
 
+SUPER_KEY = ' super('
+
 
 class Source(Base):
 
@@ -40,9 +42,27 @@ class Source(Base):
     def on_event(self, context):
         pass
 
+    def get_base_string(self, context):
+        data = ' ' + context['input'].lstrip()
+        idx = -1
+        while True:
+            new_idx = data.find(SUPER_KEY, idx + 1)
+            if new_idx != -1:
+                idx = new_idx
+            break
+        if idx == -1:
+            return context['input'].lstrip().split(' ')[-1]
+        new_base = context['input'].lstrip()[idx:]
+        matchs = re.findall(r'super\([^)]*\)', new_base)
+        if not matchs:
+            return new_base
+        if len(new_base[len(matchs[0]):].split(' ')) > 1:
+            return new_base[len(matchs[0]):].split(' ')[-1]
+        return new_base
+
     def get_complete_position(self, context):
         data = context['input']
-        trimmed = data.lstrip()
+        trimmed = self.get_base_string(context)
         if self.get_model(trimmed):
             pos = data.rfind('.')
             return pos if pos < 0 else pos + 1
@@ -59,7 +79,7 @@ class Source(Base):
                         for x in sorted(self.__local_cache.keys())]
             else:
                 return []
-        path = context['input'].lstrip().split('.')
+        path = self.get_base_string(context).split('.')
         first = path[0]
 
         model = self.get_model(first)
