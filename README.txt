@@ -165,4 +165,4 @@ Mappings that are set if *g:tryton_default_mappings* is set are :
     <Leader>arfo         tryton#search#SearchOne2Many(1)
 
 ==============================================================================
- vim:tw=78:ts=8:ft=help:norl:
+ vim:tw=78:ts=8:ft=help:
