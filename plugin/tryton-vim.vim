@@ -64,10 +64,13 @@ function! AutoloadTrytonData() " {{{
     if !exists('g:tryton_complete_autoload')
         return
     endif
-    if g:tryton_complete_autoload
-        let g:tryton_data_cache = tryton#tools#extract_from_cmd(
-            \ 'extract model', 'extract_model', 0)
-    endif
+    try
+        if g:tryton_complete_autoload
+            let g:tryton_data_cache = tryton#tools#extract_from_cmd(
+                \ 'extract model', 'extract_model', 0)
+        endif
+    catch
+    endtry
 endfunction " }}}
 
 let g:tryton_path_config = [
