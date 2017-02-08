@@ -140,6 +140,11 @@ snippet pg "pool.get(...)" b
 ${1:var_name} = pool.get('${2:model_name}')${3}
 endsnippet
 
+snippet pp "Pool -> pool.get" b
+pool = Pool()
+${1:Model} = pool.get('${2:model}')${3}
+endsnippet
+
 snippet trco "Transaction().context" i
 Transaction().context${1}
 endsnippet
@@ -195,7 +200,6 @@ snippet defdef "def default_...(cls):" b
 @classmethod
 def default_${1:field_name}(cls):
     ${2}return ${3}
-
 endsnippet
 
 snippet __init__ "Tryton __init__ header"

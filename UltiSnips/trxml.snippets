@@ -26,19 +26,15 @@ snippet xml "<xml version>" b
 <?xml version="1.0"?>
 endsnippet
 
-snippet xmlver "<xml version encoding>" b
-<?xml version="1.0" encoding="utf-8"?>
-endsnippet
-
-snippet xmltree "<tree string=...>" b
-<tree string="${1:tree_name}">
-    <field name="${2:field_name}"/>${3}
+snippet xtree "<tree>" b
+<tree>
+    <field name="${1:field_name}"/>${2}
 </tree>${4}
 endsnippet
 
-snippet xmlform "<form strin=...>" b
-<form string="${1:form_name}">
-    ${2:content}
+snippet xform "<form>" b
+<form>
+    ${2}
 </form>${3}
 endsnippet
 
@@ -74,7 +70,7 @@ ${1:field_name}[@${2:field_attribute}='${3:field_value}']${4}
 endsnippet
 
 snippet fina "<field name=... />" b
-<field name="${1:field_name}"/>${2}
+<field name="${1:field_name}"${2}/>${3}
 endsnippet
 
 snippet finafa "<field name=... factor=... suffix>" b
@@ -96,7 +92,7 @@ endsnippet
 
 snippet lafina "<field name=... /><label name=... />" b
 <label name="${1:field_name}"/>
-<field name="$1"/>${2}
+<field name="$1"${2}/>${3}
 endsnippet
 
 snippet finh "<field name=inherit .../>" b
@@ -105,8 +101,8 @@ endsnippet
 
 snippet grp "<group>" b
 <group ${1:id="${2:group_id}" string="${3}"}${4:name="${5:field_name}"}>
-    ${2:group_content}
-</group>${3}
+    ${6:group_content}
+</group>${7}
 endsnippet
 
 snippet but "<button .../>" b
@@ -114,8 +110,7 @@ snippet but "<button .../>" b
 endsnippet
 
 snippet nw "<newline/>" b
-<newline/>
-${1}
+<newline/>${1}
 endsnippet
 
 snippet refo "<record model='ir.ui.view' id=...form>" b
@@ -126,12 +121,28 @@ snippet refo "<record model='ir.ui.view' id=...form>" b
 </record>${3}
 endsnippet
 
+snippet refoh "<record model='ir.ui.view' id=...form inherit>" b
+<record model="ir.ui.view" id="$3_view_form">
+    <field name="model">${1:model_name}</field>
+    <field name="inherit" ref="${2:module}.${3:inherited_id}${4:_view_form}"/>
+    <field name="name">$3_form</field>
+</record>${5}
+endsnippet
+
 snippet reli "<record model='ir.ui.view' id=...list>" b
 <record model="ir.ui.view" id="${2:$1}_view_list">
     <field name="model">${1:model_name}</field>
     <field name="type">tree</field>
     <field name="name">$2_list</field>
 </record>${3}
+endsnippet
+
+snippet relih "<record model='ir.ui.view' id=...list inherit>" b
+<record model="ir.ui.view" id="$3_view_list">
+    <field name="model">${1:model_name}</field>
+    <field name="inherit" ref="${2:module}.${3:inherited_id}${4:_view_list}"/>
+    <field name="name">$3_list</field>
+</record>${5}
 endsnippet
 
 snippet retr "<record model='ir.ui.view' id=...tree>" b
@@ -156,15 +167,15 @@ snippet refoli "<record model='ir.ui.view' id=...form/> <record model='ir.ui.vie
 endsnippet
 
 snippet rewi "<record model='ir.action_wizard' id=act_...>" b
-<record model="ir.action.wizard" id="act_$3">
+<record model="ir.action.wizard" id="act_${3:$2}">
     <field name="name">${1:Wizard Name}</field>
-    <field name="wiz_name">${2:wizard_module}.${3:wizard_model_name}</field>
+    <field name="wiz_name">${2:wizard_name}</field>
 </record>
 ${4:<record model="ir.action.keyword" id="act_$3_keyword">
     <field name="keyword">form_action</field>
-    <field name="model">${5:source_module}.${6:source_model},${7:-1}</field>
+    <field name="model">${5:source_model},${6:-1}</field>
     <field name="action" ref="act_$3"/>
-</record>}${8}
+</record>}${7}
 endsnippet
 
 snippet ntbk "<notebook>" b
@@ -174,14 +185,13 @@ snippet ntbk "<notebook>" b
 endsnippet
 
 snippet ntpg "<page ...>" b
-<page ${1:id="${2:group_id}" name="${3:group_name}"}${4:name="${5:field_name}"}>
+<page ${1:id="${2:group_id}" string="${3:group_name}"}${4:name="${5:field_name}"}>
     ${6}
 </page>
 endsnippet
 
 snippet xmlmenu "<menuitem .../>" b
-<menuitem name="${1:menu_name}" id="${2:$1_id}" sequence="${3:seq}"/>
-${4}
+<menuitem name="${1:menu_name}" id="${2:$1_id}" sequence="${3:seq}"/>${4}
 endsnippet
 
 snippet xmlrelate "Tryton Relat" b
@@ -212,53 +222,32 @@ snippet crmenu "Tryton Entry Point" b
     <field name="name">${2:form_name}</field>
     <field name="res_model">${3:module_name.model_name}</field>
 </record>
-<record model="ir.action.act_window.view" id="act_${5:$1}_view1">
-    <field name="sequence" eval="${6:seq}"/>
-    <field name="view" ref="${7:$1_tree}"/>
+<record model="ir.action.act_window.view" id="act_$1_view1">
+    <field name="sequence" eval="${4:10}"/>
+    <field name="view" ref="${5:$1}_list"/>
     <field name="act_window" ref="act_$1"/>
 </record>
 <record model="ir.action.act_window.view" id="act_$1_view2">
-    <field name="sequence" eval="${8:seq}"/>
-    <field name="view" ref="${9:$1_form}"/>
+    <field name="sequence" eval="${6:20}"/>
+    <field name="view" ref="${7:$1}_form"/>
     <field name="act_window" ref="act_$1"/>
 </record>
-<menuitem parent="${10:parent_menuitem}" sequence="${11:seq}"
-    action="act_$1" id="menu_${12:$1}"/>${13}
+<menuitem parent="${8:parent_menuitem}" sequence="${9:seq}" action="act_$1" id="menu_${10:$1}"/>${11}
 endsnippet
 
 snippet com "<!-- ... -->" b
 <!-- ${1} -->${2}
 endsnippet
 
-snippet brk "<!-- ##### ... ##### -->" b
+snippet brq "<!-- ##### ... ##### -->" b
 `!p snip.rv = '<!-- ##' + len(t[1])*'#' + '## -->'`
 <!-- # ${1} # -->
 `!p snip.rv = '<!-- ##' + len(t[1])*'#' + '## -->'`
 ${2}
 endsnippet
 
-snippet fico "<field name='context'>...</field>" b
-<field name="context">{'${1:name}': ${2:value}}</field>${3}
-endsnippet
-
-snippet yx "yexpand='...'" i
- yexpand="${1:1}"${2}
-endsnippet
-
-snippet yf "yfill='...'" i
- yfill="${1:1}"${2}
-endsnippet
-
 snippet yxf "yexpand='...' yfill='...'" i
  yexpand="${1:1}" yfill="${2:1}"${3}
-endsnippet
-
-snippet xx "xexpand='...'" i
- xexpand="${1:1}"${2}
-endsnippet
-
-snippet xf "xfill='...'" i
- xfill="${1:1}"${2}
 endsnippet
 
 snippet xxf "xexpand='...' xfill='...'" i
@@ -266,17 +255,9 @@ snippet xxf "xexpand='...' xfill='...'" i
 endsnippet
 
 snippet sep "<separator .../>" b
-<separator name="${1:field_name}"/>${2}
+<separator name="${1:field_name}${2}"/>${3}
 endsnippet
 
 snippet csp "colspan='...'" i
  colspan="${1:4}"${2}
-endsnippet
-
-snippet tc "<record model='ir.test_case.instance' id='...'>" b
-<record model="ir.test_case.instance" id="${1:method_name}">
-    <field name="name">${2:Test Case Name}</field>
-    <field name="method_name">${3:$1}</field>
-    ${4:<field name="test_method_name">${5:$1_test_method}</field>}
-</record>${6}
 endsnippet
