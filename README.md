@@ -53,7 +53,6 @@ let g:tryton_server_port = '7999'
 let g:tryton_server_login = 'admin'
 let g:tryton_server_password = 'admin'
 let g:tryton_server_database = 'ref'
-let g:tryton_complete_autoload = '1'
 let g:tryton_model_match = {
     \ 'party': 'party.party',
     \ 'invoice': 'account.invoice',
@@ -74,10 +73,6 @@ asking the server everytime it is needed.
 The `g:tryton_model_match` variable is used in the completion part to be able
 to automatically map a variable name to a model. There are more informations
 about these variables in the documentation.
-
-The `g:tryton_complete_autoload` value will automatically trigger the loading
-of the modelization from the cache or from the server if available. This can
-speed up the first completion calls.
 
 
 #### Filetype

@@ -193,14 +193,6 @@ g:tryton_trytond_default_path               *g:tryton_trytond_default_path*
 
         default: not set
 
-g:tryton_complete_autoload                       *g:tryton_complete_autoload*
-
-        If true, the cache will be loaded when opening a python file. It
-        allows to avoid waiting when using tryton-details source or for
-        deoplete completion.
-
-        default: 0
-
 g:tryton_model_match                                *g:tryton_model_match*
 
         A dictionary that contains classic matches to help for completion:

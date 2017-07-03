@@ -80,7 +80,8 @@ class Source(Base):
                             'kind': 'model'}
                         for x in sorted(self.__local_cache.keys())]
             else:
-                return []
+                self.vim.call('LoadTrytonData')
+                return self.gather_candidates(context)
         path = self.get_base_string(context).split('.')
         first = path[0]
 
