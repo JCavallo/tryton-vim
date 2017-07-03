@@ -23,6 +23,7 @@
 # ============================================================================
 
 import re
+import json
 from .base import Base
 
 SUPER_KEY = ' super('
@@ -74,7 +75,9 @@ class Source(Base):
         if self.__local_cache is None:
             cache = self.vim.funcs.exists('g:tryton_data_cache')
             if cache:
-                self.__local_cache = self.vim.eval('g:tryton_data_cache')
+                fname = self.vim.call('tryton#tools#get_model_cache_path')
+                with open(fname, 'r') as f:
+                    self.__local_cache = json.loads(f.read()[:-1])
                 self.__models = [{
                             'word': x, 'abbr': x,
                             'kind': 'model'}

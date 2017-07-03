@@ -96,6 +96,12 @@ function! tryton#tools#extract_from_cmd(cmd, cmd_cache, redraw)  " {{{
     return return_dict
 endfunction  " }}}
 
+function! tryton#tools#get_model_cache_path()  " {{{
+    return expand(g:tryton_cache_dir) . '/' .
+        \ g:tryton_server_host_name . '-' . g:tryton_server_port . '-' .
+        \ g:tryton_server_database . '.extract_model.vcache'
+endfunction  " }}}
+
 function! tryton#tools#run_cmd(cmd)  " {{{
     return system(tryton#tools#browser_cmd() . a:cmd)
 endfunction  " }}}
