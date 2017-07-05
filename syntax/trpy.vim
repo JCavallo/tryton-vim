@@ -37,7 +37,9 @@ let python_highlight_all = 1
 setlocal foldmethod=syntax
 
 syn keyword trytonKeywords      fields model Transaction Pool context PoolMeta
-syn keyword trytonKeywords      pool _history __name__
+syn keyword trytonKeywords      pool _history __name__ _table _rec_name __rpc__
+syn keyword trytonKeywords      _buttons _error_messages __table__
+syn keyword trytonKeywords      _sql_constraints transaction
 
 syn keyword trytonFieldData     depends domain ondelete setter getter searcher
 syn keyword trytonFieldData     states required select size order_field loading
@@ -59,26 +61,18 @@ syn clear pythonFunction
 " Remove pythonDocTestValue, fails with trytonFieldDeclaration
 syn clear pythonDoctestValue
 
-" Redefine pythonStatement to remove class / def
-syn clear pythonStatement
-syn keyword pythonStatement     False None True
-syn keyword pythonStatement     as assert break continue del exec global
-syn keyword pythonStatement     lambda nonlocal pass print return with yield
-
-syn match   OperatorChars       "?\|+\|-\|\*\|;\|:\|,\|<\|>\|&\||\|!\|\~\|%\|=\|\.\|/\(/\|*\)\@!"
-
 " Add self / cls to pythonBuiltin
 syn keyword trytonBuiltin       self cls
 
 syn match   trytonSpecial       "__[a-zA-Z0-9_]*__"
-syn match   trytonFunctionDef   /^\s*def /
-    \ nextgroup=trytonSpecFunction,trytonCoreFunction,trytonStandardFunction
+syn match   trytonFunctionDef   /^\s*def\ze /
+    \ nextgroup=trytonCoreFunction,trytonSpecFunction,trytonStandardFunction
     \ skipwhite
-syn match   trytonClassDef      /^\s*class / nextgroup=trytonStandardFunction
+syn match   trytonClassDef      /^\s*class\ze / nextgroup=trytonStandardFunction
     \ skipwhite
-syn match   trytonStandardFunction "[a-zA-Z_][a-zA-Z0-9_]*" contained
-syn match   trytonSpecFunction  "\%(on_change_with_\|on_change_\|default_\|transition_\|search_\|getter_\|order_\|domain\)[a-zA-Z0-9_]\+" contained
-syn match   trytonCoreFunction  "\%(__setup__\|__register__\|create\|write\|delete\|copy\)" contained
+syn match   trytonStandardFunction " \zs[a-zA-Z_][a-zA-Z0-9_]*\ze(" contained
+syn match   trytonSpecFunction  " \zs\%(on_change_with_\|on_change_\|default_\|transition_\|search_\|getter_\|setter_\|order_\|domain_\)[a-zA-Z0-9_]\+\ze(" contained
+syn match   trytonCoreFunction  " \zs\%(__setup__\|__register__\|create\|write\|delete\|copy\)\ze(" contained
 
 syn region  trytonVariableDeclaration   start="^[a-zA-Z_][a-zA-Z0-9_]* = "
   \ end="\ze\%(\s*\n\)\+\%(\s\)\@!." fold transparent
@@ -110,7 +104,6 @@ if version >= 508 || !exists("did_python_syn_inits")
     HiLink trytonSpecFunction       Directory
     HiLink trytonStandardFunction   Function
     HiLink trytonBuiltin            PreCondit
-    HiLink OperatorChars            Identifier
     delcommand HiLink
 endif
 
