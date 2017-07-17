@@ -56,7 +56,7 @@ function! tryton#tools#extract_from_cmd(cmd, cmd_cache, redraw)  " {{{
             \ ['tryton_server_port', 'Tryton Server Port'],
             \ ['tryton_server_database', 'Tryton Server Database']]
         if !exists('g:' . var_def[0]) || eval('g:' . var_def[0]) ==# ""
-            execute 'let g:' . var_def[0] . " = unite#util#input('" .
+            execute 'let g:' . var_def[0] . " = input('" .
                 \ var_def[1] . " (set g:" . var_def[0] . " to avoid this) : ')"
         endif
     endfor
@@ -181,10 +181,10 @@ endfunction  " }}}
 function! tryton#tools#GetTrytondPath()  " {{{
     if exists("g:tryton_trytond_path") &&
             \ isdirectory(expand(g:tryton_trytond_path))
-        return
+        return g:tryton_trytond_path
     elseif isdirectory(expand("$VIRTUAL_ENV/lib/python-2.7/site-packages/trytond"))
         let g:tryton_trytond_path = "$VIRTUAL_ENV/lib/python-2.7/site-packages/trytond"
-        return
+        return g:tryton_trytond_path
     else
         echoerr "Please set the g:tryton_trytond_path variable to a valid path"
         return 0

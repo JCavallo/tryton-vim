@@ -39,6 +39,25 @@ class Source(Base):
         self.min_pattern_length = 0
         self.rank = 1000
         self.__local_cache = None
+        self.__models = []
+
+    @property
+    def local_cache(self):
+        if self.__local_cache is not None:
+            return self.__local_cache
+        cache = self.vim.funcs.exists('g:tryton_data_cache')
+        if cache:
+            fname = self.vim.call('tryton#tools#get_model_cache_path')
+            with open(fname, 'r') as f:
+                self.__local_cache = json.loads(f.read()[:-2])
+            self.__models = [{
+                        'word': x, 'abbr': x,
+                        'kind': 'model'}
+                    for x in sorted(self.__local_cache.keys())]
+            return self.__local_cache
+        else:
+            self.vim.call('LoadTrytonData')
+            return self.local_cache
 
     def on_event(self, context):
         pass
@@ -72,19 +91,6 @@ class Source(Base):
         return len(data) - len(trimmed)
 
     def gather_candidates(self, context):
-        if self.__local_cache is None:
-            cache = self.vim.funcs.exists('g:tryton_data_cache')
-            if cache:
-                fname = self.vim.call('tryton#tools#get_model_cache_path')
-                with open(fname, 'r') as f:
-                    self.__local_cache = json.loads(f.read()[:-1])
-                self.__models = [{
-                            'word': x, 'abbr': x,
-                            'kind': 'model'}
-                        for x in sorted(self.__local_cache.keys())]
-            else:
-                self.vim.call('LoadTrytonData')
-                return self.gather_candidates(context)
         path = self.get_base_string(context).split('.')
         first = path[0]
 
@@ -95,7 +101,7 @@ class Source(Base):
             return []
 
         for key in path[1:-1]:
-            model_data = self.__local_cache.get(model, {})
+            model_data = self.local_cache.get(model, {})
             if not model_data:
                 return []
             if key in model_data['fields']:
@@ -105,7 +111,7 @@ class Source(Base):
             else:
                 return []
 
-        model_data = self.__local_cache.get(model, {})
+        model_data = self.local_cache.get(model, {})
         if not model_data:
             return []
         res = []
@@ -124,7 +130,7 @@ class Source(Base):
             'kind': 'field [%s]' % fdata['module'],
             'menu': menu,
             'info': '\n'.join([info, ''] + [str(k) + ': ' + str(v)
-                    for k, v in fdata.items()]),
+                                            for k, v in fdata.items()]),
             }
 
     def get_func_candidate(self, mname, model_name, data):
@@ -134,7 +140,7 @@ class Source(Base):
             if mdata['mro'][frame]['initial']:
                 module = mdata['mro'][frame]['module']
         info = 'Method %s of %s : %s' % (mname, model_name,
-            mdata['parameters'])
+                                         mdata['parameters'])
         modules, classes = [], []
         for k in sorted(mdata['mro'].keys()):
             frame = mdata['mro'][k]
@@ -147,7 +153,7 @@ class Source(Base):
             'kind': 'meth  ' + ('[%s]' % module if module else ''),
             'menu': mdata['parameters'],
             'info': '\n'.join([info, '', 'Classes : ' + ', '.join(classes),
-                    '', 'Modules : ' + ', '.join(modules)]),
+                               '', 'Modules : ' + ', '.join(modules)]),
             }
 
     def get_model(self, text):
