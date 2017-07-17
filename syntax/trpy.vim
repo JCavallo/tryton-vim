@@ -23,10 +23,8 @@
 " }}}
 " #############################################################################
 
-if version < 600
-    syntax clear
-elseif exists("b:current_syntax")
-    " We need to complete the python syntax file
+if exists("b:current_syntax")
+    " This file completes the base python syntax file
     if b:current_syntax ==# 'trpy'
         finish
     endif
@@ -39,7 +37,7 @@ setlocal foldmethod=syntax
 syn keyword trytonKeywords      fields model Transaction Pool context PoolMeta
 syn keyword trytonKeywords      pool _history __name__ _table _rec_name __rpc__
 syn keyword trytonKeywords      _buttons _error_messages __table__
-syn keyword trytonKeywords      _sql_constraints __all__ __name__ __metclass__
+syn keyword trytonKeywords      _sql_constraints __all__ __name__ __metaclass__
 syn keyword trytonKeywords      cursor transaction RPC
 
 syn keyword trytonFieldData     depends domain ondelete setter getter searcher
@@ -69,10 +67,13 @@ syn clear pythonStatement
 " Redefine pythonAttribute to allow custom highlighting of special functions
 syn clear pythonAttribute
 
+" Remove unused expensive match
+syn clear pythonMatrixMultiply
+
 " Add self / cls to pythonBuiltin
 syn keyword trytonBuiltin       self cls
 
-syn match   trytonConstant      "\%(^\|\W\)\zs[A-Z_][A-Z_]\+\W"me=e-1
+syn match   trytonConstant      "\%(^\|\W\)\zs[A-Z_][A-Z_]\+\ze\%(\W\|$\)"
 
 syn match   trytonFunctionDef   /^\s*def /me=e-1
     \ nextgroup=trytonCoreFunction,trytonSpecFunction,trytonStandardFunction
@@ -96,29 +97,18 @@ syn keyword pythonStatement False None True
 syn keyword pythonStatement as assert break continue del exec global
 syn keyword pythonStatement lambda nonlocal pass print return with yield
 
-if version >= 508 || !exists("did_python_syn_inits")
-    if version <= 508
-        let did_python_syn_inits = 1
-        command -nargs=+ HiLink hi link <args>
-    else
-        command -nargs=+ HiLink hi def link <args>
-    endif
-
-    " The default methods for highlighting.  Can be overridden later
-    HiLink trytonFieldName          StorageClass
-    HiLink trytonFieldClass         Directory
-    HiLink trytonKeywords           Label
-    HiLink trytonConstant           Label
-    HiLink trytonSpecial            Label
-    HiLink trytonPyson              Label
-    HiLink trytonFieldData          Delimiter
-    HiLink trytonFunctionDef        Statement
-    HiLink trytonClassDef           Statement
-    HiLink trytonCoreFunction       Directory
-    HiLink trytonSpecFunction       Directory
-    HiLink trytonStandardFunction   Function
-    HiLink trytonBuiltin            PreCondit
-    delcommand HiLink
-endif
+hi def link trytonFieldName          StorageClass
+hi def link trytonFieldClass         Directory
+hi def link trytonKeywords           Label
+hi def link trytonConstant           Label
+hi def link trytonSpecial            Label
+hi def link trytonPyson              Label
+hi def link trytonFieldData          Delimiter
+hi def link trytonFunctionDef        Statement
+hi def link trytonClassDef           Statement
+hi def link trytonCoreFunction       Directory
+hi def link trytonSpecFunction       Directory
+hi def link trytonStandardFunction   Function
+hi def link trytonBuiltin            PreCondit
 
 let b:current_syntax = "trpy"
