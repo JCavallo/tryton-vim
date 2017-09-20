@@ -114,7 +114,7 @@ snippet nw "<newline/>" b
 endsnippet
 
 snippet refo "<record model='ir.ui.view' id=...form>" b
-<record model="ir.ui.view" id="${2:$1}_view_form">
+<record model="ir.ui.view" id="${2:`!p snip.rv = t[1].replace('.', '_')`}_view_form">
     <field name="model">${1:model_name}</field>
     <field name="type">form</field>
     <field name="name">$2_form</field>
@@ -130,7 +130,7 @@ snippet refoh "<record model='ir.ui.view' id=...form inherit>" b
 endsnippet
 
 snippet reli "<record model='ir.ui.view' id=...list>" b
-<record model="ir.ui.view" id="${2:$1}_view_list">
+<record model="ir.ui.view" id="${2:`!p snip.rv = t[1].replace('.', '_')`}_view_list">
     <field name="model">${1:model_name}</field>
     <field name="type">tree</field>
     <field name="name">$2_list</field>
@@ -146,7 +146,7 @@ snippet relih "<record model='ir.ui.view' id=...list inherit>" b
 endsnippet
 
 snippet retr "<record model='ir.ui.view' id=...tree>" b
-<record model="ir.ui.view" id="${2:$1}_view_tree">
+<record model="ir.ui.view" id="${2:`!p snip.rv = t[1].replace('.', '_')`}_view_tree">
     <field name="model">${1:model_name}</field>
     <field name="type">tree</field>
     <field name="name">$2_tree</field>
@@ -154,7 +154,7 @@ snippet retr "<record model='ir.ui.view' id=...tree>" b
 endsnippet
 
 snippet refoli "<record model='ir.ui.view' id=...form/> <record model='ir.ui.view' id=...list>" b
-<record model="ir.ui.view" id="${2:$1}_view_form">
+<record model="ir.ui.view" id="${2:`!p snip.rv = t[1].replace('.', '_')`}_view_form">
     <field name="model">${1:model_name}</field>
     <field name="type">form</field>
     <field name="name">$2_form</field>
@@ -167,7 +167,7 @@ snippet refoli "<record model='ir.ui.view' id=...form/> <record model='ir.ui.vie
 endsnippet
 
 snippet rewi "<record model='ir.action_wizard' id=act_...>" b
-<record model="ir.action.wizard" id="act_${3:$2}">
+<record model="ir.action.wizard" id="act_${3:`!p snip.rv = t[2].replace('.', '_')`}">
     <field name="name">${1:Wizard Name}</field>
     <field name="wiz_name">${2:wizard_name}</field>
 </record>
@@ -195,14 +195,14 @@ snippet xmlmenu "<menuitem .../>" b
 endsnippet
 
 snippet xmlrelate "Tryton Relat" b
-<record model="ir.action.act_window" id="act_${2}_${4:$1}">
+<record model="ir.action.act_window" id="act_${2}_${4:`!p snip.rv = t[1].replace('.', '_')`}">
     <field name="name">${3:Name}</field>
-    <field name="res_model">${1:module.model}</field>
+    <field name="res_model">${1:model}</field>
     <field name="domain">[('${5:back_ref}', '=', ${6:Eval('id')})${7}]</field>
 </record>
 ${11:<record model="ir.action.act_window.view" id="act_$2_$4_view1">
     <field name="sequence" eval="${12:1}"/>
-    <field name="view" ref="${13:$4_tree}"/>
+    <field name="view" ref="${13:$4_view_list}"/>
     <field name="act_window" ref="act_$2_$4"/>
 </record>}
 ${14:<record model="ir.action.act_window.view" id="act_$2_$4_view2">
@@ -218,21 +218,21 @@ ${14:<record model="ir.action.act_window.view" id="act_$2_$4_view2">
 endsnippet
 
 snippet crmenu "Tryton Entry Point" b
-<record model="ir.action.act_window" id="act_${1:model_name}">
-    <field name="name">${2:form_name}</field>
-    <field name="res_model">${3:module_name.model_name}</field>
+<record model="ir.action.act_window" id="act_${2:open_`!p snip.rv = t[1].replace('.', '_')`}">
+    <field name="name">${3:form_name}</field>
+    <field name="res_model">${1:module_name.model_name}</field>
 </record>
-<record model="ir.action.act_window.view" id="act_$1_view1">
+<record model="ir.action.act_window.view" id="act_$2_view_list">
     <field name="sequence" eval="${4:10}"/>
-    <field name="view" ref="${5:$1}_list"/>
-    <field name="act_window" ref="act_$1"/>
+    <field name="view" ref="${5:$2}_view_list"/>
+    <field name="act_window" ref="act_$2"/>
 </record>
-<record model="ir.action.act_window.view" id="act_$1_view2">
+<record model="ir.action.act_window.view" id="act_$2_view_form">
     <field name="sequence" eval="${6:20}"/>
-    <field name="view" ref="${7:$1}_form"/>
-    <field name="act_window" ref="act_$1"/>
+    <field name="view" ref="${7:$2}_view_form"/>
+    <field name="act_window" ref="act_$2"/>
 </record>
-<menuitem parent="${8:parent_menuitem}" sequence="${9:seq}" action="act_$1" id="menu_${10:$1}"/>${11}
+<menuitem parent="${8:parent_menuitem}" sequence="${9:seq}" action="act_$2" id="menu_${10:$2}"/>${11}
 endsnippet
 
 snippet com "<!-- ... -->" b
@@ -260,4 +260,26 @@ endsnippet
 
 snippet csp "colspan='...'" i
  colspan="${1:4}"${2}
+endsnippet
+
+snippet maad "model access admin" b
+<record model="ir.model.access" id="access_${7:`!p snip.rv = t[1].replace('.', '_')`}_$3">
+    <field name="model" search="[('model', '=', '${1:model_name}')]"/>
+    <field name="group" ref="${2:module.}${3:${4:group_}${5:name}${6:_admin}}"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_write" eval="True"/>
+    <field name="perm_create" eval="True"/>
+    <field name="perm_delete" eval="True"/>
+</record>
+endsnippet
+
+snippet maro "model access readonly" b
+<record model="ir.model.access" id="access_${7:`!p snip.rv = t[1].replace('.', '_')`}_$3">
+    <field name="model" search="[('model', '=', '${1:model_name}')]"/>
+    <field name="group" ref="${2:module.}${3:${4:group_}${5:name}${6:_read}}"/>
+    <field name="perm_read" eval="True"/>
+    <field name="perm_write" eval="False"/>
+    <field name="perm_create" eval="False"/>
+    <field name="perm_delete" eval="False"/>
+</record>
 endsnippet
