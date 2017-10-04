@@ -263,9 +263,9 @@ snippet csp "colspan='...'" i
 endsnippet
 
 snippet maad "model access admin" b
-<record model="ir.model.access" id="access_${7:`!p snip.rv = t[1].replace('.', '_')`}_$3">
+<record model="ir.model.access" id="access_${7:`!p snip.rv = t[1].replace('.', '_')`}_$5$6">
     <field name="model" search="[('model', '=', '${1:model_name}')]"/>
-    <field name="group" ref="${2:module.}${3:${4:group_}${5:name}${6:_admin}}"/>
+    <field name="group" ref="${3:${4:module}.}${5:group_}${6:name}"/>}
     <field name="perm_read" eval="True"/>
     <field name="perm_write" eval="True"/>
     <field name="perm_create" eval="True"/>
@@ -274,12 +274,22 @@ snippet maad "model access admin" b
 endsnippet
 
 snippet maro "model access readonly" b
-<record model="ir.model.access" id="access_${7:`!p snip.rv = t[1].replace('.', '_')`}_$3">
+<record model="ir.model.access" id="access_${2:`!p snip.rv = t[1].replace('.', '_')`}_${3:read_only}">
     <field name="model" search="[('model', '=', '${1:model_name}')]"/>
-    <field name="group" ref="${2:module.}${3:${4:group_}${5:name}${6:_read}}"/>
     <field name="perm_read" eval="True"/>
     <field name="perm_write" eval="False"/>
     <field name="perm_create" eval="False"/>
     <field name="perm_delete" eval="False"/>
+</record>
+endsnippet
+
+snippet macstm "model access custom" b
+<record model="ir.model.access" id="access_${8:`!p snip.rv = t[1].replace('.', '_')`}_${7:`!p snip.rv = (t[6] or 'default')`}">
+    <field name="model" search="[('model', '=', '${1:model_name}')]"/>${2:
+    <field name="group" ref="${3:${4:module}.}${5:group_}${6:name}"/>}
+    <field name="perm_read" eval="${9:True}${10:False}"/>
+    <field name="perm_write" eval="${11:True}${12:False}"/>
+    <field name="perm_create" eval="${13:True}${14:False}"/>
+    <field name="perm_delete" eval="${15:True}${16:False}"/>
 </record>
 endsnippet
