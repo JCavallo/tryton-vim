@@ -48,27 +48,45 @@ syn keyword trytonFieldClass    One2Many Char Integer Many2One Dict Text Date
 syn keyword trytonFieldClass    Many2Many Binary Selection Reference Function
 syn keyword trytonFieldClass    Numeric Boolean Wizard StateAction Button
 syn keyword trytonFieldClass    StateView StateTransition TimeDelta TimeStamp
-syn keyword trytonFieldClass    MultiValue
+syn keyword trytonFieldClass    MultiValue Property
 
 syn keyword trytonPyson         Eval Bool Len If Or And Not In
 
 syn match   trytonFieldName     "^    [a-zA-Z_][a-zA-Z0-9][a-zA-Z0-9_]* "
     \ contained
 
+" Following clears must be tried because they may not exist depending on the
+" runtime version
+
 " Clear pythonFunction for proper matching order, replaced with trytonXXXDef
-syn clear pythonFunction
+try
+    syn clear pythonFunction
+catch
+endtry
 
 " Remove pythonDocTestValue, fails with trytonFieldDeclaration
-syn clear pythonDoctestValue
+try
+    syn clear pythonDoctestValue
+catch
+endtry
 
 " Redefine pythonStatement to remove class / def
-syn clear pythonStatement
+try
+    syn clear pythonStatement
+catch
+endtry
 
 " Redefine pythonAttribute to allow custom highlighting of special functions
-syn clear pythonAttribute
+try
+    syn clear pythonAttribute
+catch
+endtry
 
 " Remove unused expensive match
-syn clear pythonMatrixMultiply
+try
+    syn clear pythonMatrixMultiply
+catch
+endtry
 
 " Add self / cls to pythonBuiltin
 syn keyword trytonBuiltin       self cls
@@ -90,7 +108,7 @@ syn region  trytonFunctionFold  start="^\z(\s*\)def "
     \ end="\ze\%(\s*\n\)\+\%(\z1\s\)\@!." fold transparent
 syn region  trytonClassFold  start="^\z(\s*\)class "
     \ end="\ze\%(\s*\n\)\+\%(\z1\s\)\@!." fold transparent
-syn region  trytonFieldDeclaration   start="^\z(\s*\)\([a-zA-Z_][a-zA-Z0-9_]*\) = \%(fields\.\|StateTransition\|StateView\|StateAction\)"
+syn region  trytonFieldDeclaration   start="^\z(\s*\)\([a-zA-Z_][a-zA-Z0-9_]*\) = \%(fields\.\|StateTransition\|StateView\|StateAction\|[a-zA-Z0-9_]\+\.translated\)"
   \ end="\ze\%(\s*\n\)\+\%(\z1\s\)\@!." fold transparent contains=ALLBUT,trytonFunctionDef
 
 syn keyword pythonStatement False None True
