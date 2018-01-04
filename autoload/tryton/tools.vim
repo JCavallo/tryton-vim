@@ -103,7 +103,7 @@ function! tryton#tools#get_model_cache_path()  " {{{
 endfunction  " }}}
 
 function! tryton#tools#run_cmd(cmd)  " {{{
-    return system(tryton#tools#browser_cmd() . a:cmd)
+    return system('python ' . tryton#tools#browser_cmd() . a:cmd)
 endfunction  " }}}
 
 function! tryton#tools#get_data_from_path(path)  " {{{
@@ -135,7 +135,7 @@ function! tryton#tools#get_conf_from_path(path)  " {{{
             return values
         endif
     endfor
-    return {}
+    return g:default_path_config
 endfunction  " }}}
 
 function! tryton#tools#edit_file(path)  " {{{

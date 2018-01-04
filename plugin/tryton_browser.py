@@ -24,24 +24,21 @@
 # }}}
 ###############################################################################
 import argparse
+import xmlrpclib
 import json
 
 
-def set_client(parameters):
-    from proteus import config
-
-    config.set_xmlrpc(arguments.tryton_url)
+def get_client(parameters):
+    return xmlrpclib.ServerProxy(parameters.tryton_url)
 
 
-def extract(parameters):
-    from proteus import Model
-    ModelDebug = Model.get('ir.model.debug.model_info')
+def extract(client, parameters):
+    ModelDebug = client.model.ir.model.debug.model_info
     if parameters.what == 'model':
         values = ModelDebug.raw_field_infos({})
     elif parameters.what == 'modules':
         values = ModelDebug.raw_module_infos({})
     print json.dumps(values)
-
 
 # Main parser
 parser = argparse.ArgumentParser(description='Browse tryton db')
@@ -56,5 +53,5 @@ parser_extract.add_argument('what', help='What to extract',
 
 arguments = parser.parse_args()
 
-set_client(arguments)
-globals()[arguments.command](arguments)
+client = get_client(arguments)
+globals()[arguments.command](client, arguments)

@@ -63,32 +63,98 @@ function! LoadTrytonData() " {{{
         \ 'extract model', 'extract_model', 0)
 endfunction " }}}
 
+function! RefreshTrytonData() " {{{
+    let g:tryton_data_cache = tryton#tools#extract_from_cmd(
+        \ 'extract model', 'extract_model', 1)
+endfunction " }}}
+
+let g:default_path_config = {
+    \ "word__extract": "format_default",
+    \ "action__extract": "action_default",
+    \ "word__kind": "default",
+    \ "word__columns": {
+        \ "string": [60, "Number"],
+        \ "arrow": [0, "Function"],
+        \ "value": [0, "Type"],
+        \ },
+    \ }
+
 let g:tryton_path_config = [
     \ [[".*"], {
             \ "word__extract": "format_model",
+            \ "word__kind": "model",
+            \ "action__extract": "action_default",
+            \ "word__columns": {
+                \ "string": [60, "Delimiter"],
+                \ "key": [0, "Number"],
+                \ },
             \ }],
     \ [[".*", "fields", '.*'], {
             \ "word__extract": "format_field",
+            \ "word__kind": "field",
             \ "action__extract": "action_fields",
+            \ "word__columns": {
+                \ "string": [40, "Delimiter"],
+                \ "function": [4, "Statement"],
+                \ "kind": [20, "Type"],
+                \ "key": [40, "Number"],
+                \ "module": [0, "Normal"],
+                \ },
             \ }],
     \ [[".*", "views", '.*'], {
             \ "word__extract": "format_view",
+            \ "word__kind": "view",
             \ "action__extract": "action_view",
+            \ "word__columns": {
+                \ "key": [4, "Delimiter"],
+                \ "type": [6, "Statement"],
+                \ "inherit": [4, "Type"],
+                \ "id": [0, "Number"],
+                \ },
             \ }],
     \ [[".*", "views", '.*', 'inherit', '.*'], {
             \ "word__extract": "format_view",
+            \ "word__kind": "view",
             \ "action__extract": "action_view",
+            \ "word__columns": {
+                \ "key": [4, "Delimiter"],
+                \ "type": [6, "Statement"],
+                \ "inherit": [4, "Type"],
+                \ "id": [0, "Number"],
+                \ },
             \ }],
     \ [[".*", "methods", '.*'], {
             \ "word__extract": "format_method",
+            \ "word__kind": "method",
+            \ "action__extract": "action_default",
+            \ "word__columns": {
+                \ "key": [60, "Number"],
+                \ "field": [0, "Delimiter"],
+                \ },
             \ }],
     \ [[".*", "methods", '.*', "mro", '.*'], {
-            \ "word__extract": "format_method_mro",
+            \ "word__extract": "format_mro",
+            \ "word__kind": "mro",
             \ "action__extract": "action_method_mro",
+            \ "word__columns": {
+                \ "key": [4, "Delimiter"],
+                \ "path": [60, "Normal"],
+                \ "override": [4, "Statement"],
+                \ "module": [40, "Number"],
+                \ "base_name": [0, "Type"],
+                \ },
             \ }],
     \ [[".*", "mro", '.*'], {
             \ "word__extract": "format_mro",
+            \ "word__kind": "mro",
             \ "action__extract": "action_mro",
+            \ "word__columns": {
+                \ "key": [4, "Delimiter"],
+                \ "path": [60, "Normal"],
+                \ "override": [4, "Statement"],
+                \ "module": [40, "Number"],
+                \ "base_name": [0, "Type"],
+                \ },
             \ }],
     \ ]
 
