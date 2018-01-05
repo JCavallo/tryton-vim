@@ -22,7 +22,7 @@
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # ============================================================================
 
-from ..kind.openable import Kind as Openable
+from ..kind.file import Kind as Openable
 
 
 class Kind(Openable):
