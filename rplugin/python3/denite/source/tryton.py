@@ -349,3 +349,6 @@ class Source(Base):
                 'syntax match %s /\%%%ic[^-].*[^>]$/'
                 % (get_highlight('value'), cur_start))
         return
+
+    def get_status(self, context):
+        return '/'.join(['tryton'] + self.walk_path)
