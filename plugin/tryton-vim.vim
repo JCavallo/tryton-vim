@@ -34,6 +34,9 @@ let g:tryton_cache_dir = expand('~/.cache/denite/tryton')
 autocmd FileType xml let b:syntastic_xml_xmllint_args =
     \ get(g:, 'syntastic_xml_xmllint_args', '') .
     \ FindXmlRngConfig(expand('<afile>'))
+autocmd FileType xml let b:neomake_xml_xmllint_args =
+    \ get(g:, 'neomake_xml_xmllint_args', '') .
+    \ FindXmlRngConfig(expand('<afile>'))
 
 function! FindXmlRngConfig(filename) "{{{
     if get(g:, 'tryton_trytond_path', '') ==# ''
