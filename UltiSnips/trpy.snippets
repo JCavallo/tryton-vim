@@ -220,3 +220,29 @@ endsnippet
 snippet ondel "ondelete=..." i
 ondelete='${1:CASCADE}',${2}
 endsnippet
+
+snippet defget "def getter_...(cls, instances, name):" b
+@classmethod
+def getter_${1:field_name}(cls, instances, name):
+    pool = Pool()
+    ${2:OtherModel} = pool.get('${3:other.model}')
+    ${4:table} = cls.__table__()
+    ${5:other_table} = $2.__table__()
+
+    result = {x.id: None for x in instances}
+    cursor = Transaction().connection.cursor()
+    query = $4.join($5,
+        condition=${6:$4.${7:$5} == $5.id}
+        )
+
+    # from trytond.tools import grouped_slice, cursor_dict
+    for slice in grouped_slice(instances):
+        cursor.execute(*query.select($4.id, ${8:value},
+                where=$4.id.in_([x.id for x in slice])
+                ))
+
+        for ${9:$4_id}, ${10:value} in cursor.fetchall():
+            result[$9] = $10
+
+    return result
+endsnippet
