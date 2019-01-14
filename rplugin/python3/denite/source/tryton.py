@@ -24,7 +24,6 @@
 
 import json
 from .base import Base
-from ..kind.walkable import Kind
 
 
 class Source(Base):
@@ -33,7 +32,7 @@ class Source(Base):
         super().__init__(vim)
 
         self.name = 'tryton'
-        self.kind = Kind(vim)
+        self.kind = 'walkable'
         self.__local_cache = None
         self.__syn_clear = []
 
