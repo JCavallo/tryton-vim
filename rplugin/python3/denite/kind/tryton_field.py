@@ -21,8 +21,15 @@
 #     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 # ============================================================================
+import sys
+import os
 
-from .walkable import Kind as Walkable
+try:
+    sys.path.insert(1, os.path.dirname(__file__))
+    from walkable import Kind as Walkable
+
+finally:
+    sys.path.remove(os.path.dirname(__file__))
 
 
 class Kind(Walkable):
