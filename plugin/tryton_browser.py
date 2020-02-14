@@ -24,7 +24,10 @@
 # }}}
 ###############################################################################
 import argparse
-import xmlrpclib
+try:
+    import xmlrpclib
+except ImportError:
+    import xmlrpc.client as xmlrpclib
 import json
 
 
@@ -38,7 +41,7 @@ def extract(client, parameters):
         values = ModelDebug.raw_field_infos({})
     elif parameters.what == 'modules':
         values = ModelDebug.raw_module_infos({})
-    print json.dumps(values)
+    print(json.dumps(values))
 
 # Main parser
 parser = argparse.ArgumentParser(description='Browse tryton db')
