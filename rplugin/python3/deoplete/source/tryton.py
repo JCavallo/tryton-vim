@@ -24,7 +24,7 @@
 
 import re
 import json
-from .base import Base
+from deoplete.base.source import Base
 
 SUPER_KEY = ' super('
 
