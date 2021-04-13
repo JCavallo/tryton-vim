@@ -25,6 +25,36 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+if !exists("g:tryton_ftdetect") || !g:tryton_ftdetect
+    let g:tryton_ftdetect = 1
+
+    " Guess for python or xml files
+    autocmd BufNewFile,BufRead *.py call <SID>IsTrytonPy()
+    autocmd BufNewFile,BufRead *.xml call <SID>IsTrytonXml()
+
+    function! s:HasTryton()  " {{{
+        return search('tryton', 'nw')
+    endfunction  " }}}
+
+    function! s:IsTrytonPy()  " {{{
+        if <SID>HasTryton()
+            setlocal filetype=python.trpy
+        endif
+    endfunction  " }}}
+
+    function! s:IsTrytonXml()  " {{{
+        if <SID>HasTryton()
+            setlocal filetype=xml.trxml
+        else
+            " Check we are not in the 'view' folder
+            let tryton_cfg = globpath(expand("%:p:h"), '../tryton.cfg')
+            if strlen(tryton_cfg) > 0
+                setlocal filetype=xml.trxml
+            endif
+        endif
+    endfunction  " }}}
+endif
+
 let g:tryton_xml_indent = "   "
 let g:tryton_grep_command = 'Unite grep:.:-inR:'
 let g:tryton_grep_options = " -auto-preview -no-split -no-empty"
