@@ -26,14 +26,26 @@ snippet xml "<xml version>" b
 <?xml version="1.0"?>
 endsnippet
 
+snippet mess "<ir.message>" b
+<record model="ir.message" id="msg_${1}">
+    <field name="text">${2}</field>
+</record>${3}
+endsnippet
+
 snippet xtree "<tree>" b
 <tree>
     <field name="${1:field_name}"/>${2}
 </tree>${4}
 endsnippet
 
+snippet xtree "<tree>" b
+<tree${1}>
+    <field name="${2:field_name}"/>${3}
+</tree>${4}
+endsnippet
+
 snippet xform "<form>" b
-<form>
+<form${1}>
     ${2}
 </form>${3}
 endsnippet

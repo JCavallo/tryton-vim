@@ -25,8 +25,8 @@
 snippet defset "def __setup__(cls): ..." b
 @classmethod
 def __setup__(cls):
-    ${1}super(${2:Class Name}, cls).__setup__()
-    ${3}
+    ${1}super().__setup__()
+    ${2}
 endsnippet
 
 snippet fibo "Tryton Boolean Field" b
